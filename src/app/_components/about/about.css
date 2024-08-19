@@ -1,0 +1,35 @@
+.about-circle-style {
+    border-style: dashed;
+    border-width: 4px;
+    border-radius: 9999px;
+    position: absolute;
+    left: -5%;
+    top: -5%;
+    width: 110%;
+    height: 110%;
+    transition: top 0.5s, left 0.5s, transform 0.5s, width 0.5s, height 0.5s;
+}
+
+.about-circle-style:hover {
+    top: -10%;
+    left: -10%;
+    transform: rotate(30deg);
+    width: 120%;
+    height: 120%;
+}
+
+.yellow-circle {
+    border-color: rgb(252 244 52);
+}
+
+.white-circle {
+    border-color: rgb(255 255 255);
+}
+
+.purple-circle {
+    border-color: rgb(156 89 209);
+}
+
+.black-circle {
+    border-color: rgb(44 44 44);
+}

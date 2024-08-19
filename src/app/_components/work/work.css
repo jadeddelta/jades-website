@@ -1,0 +1,12 @@
+.timeline-button-style {
+    width: 5vw;
+    height: 5vw;
+    border-width: 4px;
+    border-radius: 9999px;
+    border-color: rgb(255 255 255);
+    transition: background-color 0.5s;
+}
+
+.timeline-button-style:hover {
+    background-color: rgb(255 255 255);
+}
