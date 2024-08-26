@@ -15,7 +15,7 @@ export default function Main() {
             <div className="flex flex-col justify-between gap-2">
                 <div className="flex flex-row">
                     <p className="text-xl">
-                        hi there, i'm
+                        hi there, i&apos;m
                     </p>
                 </div>
                 <p className="new text-7xl">

@@ -19,26 +19,26 @@ export default function About() {
     }
 
     return (
-        <div className="flex flex-col items-center justify-between w-full grow border gap-4 py-8 border-blue-500" id="about">
+        <div className="flex flex-col items-center justify-between w-full grow gap-4 py-16" id="about">
             <p className="text-4xl">about me</p>
             <div className="flex flex-row items-center justify-between w-full px-[20vh] py-[5vh]">
                 <div className="w-[30vw]">
-                    hello world! i'm a current senior at vassar college studying for a bachelor's in computer science
+                    hello world! i&apos;m a current senior at vassar college studying for a bachelor&apos;s in computer science
                     with a minor in mathematics! my interests are quite scattered around technology as a whole, as 
-                    this field never ceases to amaze me. i've tried out a lot of different topics, from web 
+                    this field never ceases to amaze me. i&apos;ve tried out a lot of different topics, from web 
                     development to machine learning, all the way up to rudimentary game development! 
                 </div>
                 <div className="w-[30vw]">
-                    below, you'll find specific areas of technology that i've dabbled in, along with various projects 
-                    that i've worked on. i'm always looking for new opportunities to learn and grow, so feel free to
+                    below, you&apos;ll find specific areas of technology that i&apos;ve dabbled in, along with various projects 
+                    that i&apos;ve worked on. i&apos;m always looking for new opportunities to learn and grow, so feel free to
                     reach out if you have any questions or want to chat!
                 </div>
             </div>
             <p className="text-3xl">expertise</p>
             <div className="my-[10vh]" style={gridStyle}>
-                {aboutList.map((item) => {
+                {aboutList.map((item, index) => {
                     return (
-                        <AboutCircle title={item.title} description={item.description} color={item.color} gridArea={getGridArea(item.id)} />
+                        <AboutCircle title={item.title} description={item.description} color={item.color} gridArea={getGridArea(item.id)} key={index} />
                     );
                 })}
             </div>

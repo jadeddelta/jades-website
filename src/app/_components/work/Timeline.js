@@ -28,7 +28,7 @@ export default function Timeline() {
                     );
                 })}
             </div>
-            <div className="flex flex-col justify-center items-center p-4 w-[80vw] h-[60vh] border-2 border-dashed rounded-lg border-gray-500 m-auto gap-4">
+            <div className="flex flex-col justify-center items-center p-12 w-[80vw] h-[60vh] border-2 border-dashed rounded-lg border-gray-500 m-auto gap-4">
                 {active === -1 ? (
                     <div className="">
                         <pre className="text-gray-500">tap a circle for more information !</pre>
