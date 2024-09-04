@@ -1,5 +1,6 @@
 import { useState } from "react";
 import MainContact from "../_components/main/MainContact";
+import '../_components/main/main.css'
 
 export default function Main() {
     const [jobTitle, setJobTitle] = useState(0);
@@ -11,21 +12,21 @@ export default function Main() {
     }
 
     return (
-        <div className="flex flex-row items-center justify-between gap-12 px-[10%] w-full h-[90vh] grow top-0" id="main">
+        <div className="flex flex-row items-center justify-between px-[10%] w-full h-[90vh] main-container" id="main">
             <div className="flex flex-col justify-between gap-2">
                 <div className="flex flex-row">
                     <p className="text-xl">
                         hi there, i&apos;m
                     </p>
                 </div>
-                <p className="new text-7xl">
+                <p className="new text-7xl font-thin">
                     jadeddelta
                 </p>
                 <div className="flex flex-row grow">
                     <div className="flex-grow"/>
                     <p className="text-xl">
                         {jobTitles[jobTitle] + " "} 
-                        <a href="#" onClick={buttonClickHandler}>*</a>
+                        <a className="text-2xl font-bold" href="#" onClick={buttonClickHandler}>*</a>
                     </p>
                 </div>
             </div>
@@ -34,7 +35,7 @@ export default function Main() {
                 {
 `a human centric developer 
 \twith a great passion for
-\t\tcreating, learning, and building`
+\t\tlearning, creating, and upgrading`
                 }
                 </pre>
                 <div className="flex flex-row items-center justify-evenly">

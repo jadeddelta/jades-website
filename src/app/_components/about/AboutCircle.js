@@ -7,7 +7,7 @@ export default function AboutCircle(props) {
 
     return (
         <div className={contentStyle} style={props.gridArea}>
-            <p className=' text-cyan-100'>{props.title}</p>
+            <p className='text-cyan-200 font-semibold'>{props.title}</p>
             <p>{props.description}</p>
             <div className={borderStyle} />
         </div>

@@ -24,18 +24,17 @@ export default function About() {
             <div className="flex flex-row items-center justify-between w-full px-[20vh] py-[5vh]">
                 <div className="w-[30vw]">
                     hello world! i&apos;m a current senior at vassar college studying for a bachelor&apos;s in computer science
-                    with a minor in mathematics! my interests are quite scattered around technology as a whole, as 
-                    this field never ceases to amaze me. i&apos;ve tried out a lot of different topics, from web 
-                    development to machine learning, all the way up to rudimentary game development! 
+                    with a math minor! i&apos;ve dabbled in plenty of diverse topics, from web 
+                    development to machine learning, even rudimentary game development! 
                 </div>
                 <div className="w-[30vw]">
-                    below, you&apos;ll find specific areas of technology that i&apos;ve dabbled in, along with various projects 
-                    that i&apos;ve worked on. i&apos;m always looking for new opportunities to learn and grow, so feel free to
-                    reach out if you have any questions or want to chat!
+                    below, you&apos;ll find various projects and skills that i&apos;ve developed since high school.
+                    i&apos;m always looking for new opportunities to learn and grow, so feel free to
+                    reach out if you have any questions or want to chat/collaborate!
                 </div>
             </div>
             <p className="text-3xl">expertise</p>
-            <div className="my-[10vh]" style={gridStyle}>
+            <div className="mt-[15vh] mb-[10vh]" style={gridStyle}>
                 {aboutList.map((item, index) => {
                     return (
                         <AboutCircle title={item.title} description={item.description} color={item.color} gridArea={getGridArea(item.id)} key={index} />

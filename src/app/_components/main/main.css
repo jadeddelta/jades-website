@@ -1,0 +1,22 @@
+:root {
+    --bar-color: 89, 161, 142, 0.169;
+    --dot-color: 89, 161, 142, 0.219;
+}
+
+.main-container {
+    background-image: 
+        linear-gradient(
+            to bottom, 
+            transparent 10%, 
+            rgba(var(--bar-color)) 10%,
+            rgba(var(--bar-color)) 90%,
+            transparent 90%
+        ),
+        radial-gradient(
+            rgba(var(--dot-color)) 2px, 
+            transparent 0
+        );
+    background-size: cover, 30px 30px;
+    background-position: 0 -5px, -5px -5px;
+    background-repeat: no-repeat, repeat;
+}

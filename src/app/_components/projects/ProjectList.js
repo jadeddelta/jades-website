@@ -202,3 +202,16 @@ export const projectList = [
         }
     ]
 ]
+
+const projectMap = {
+    "Web Development": "web",
+    "Machine Learning Research": "ml",
+    "Data Analysis": "data",
+    "Game/App Development": "game",
+    "Software Development": "sd",
+    "UI/UX Design": "ui",
+}
+
+export const getProjectClass = (skill) => {
+    return projectMap[skill];
+}

@@ -1,17 +1,22 @@
 import Image from 'next/image';
+import { getProjectClass } from './ProjectList';
 
 export default function ExpandedBox({ project, compress }) {
 
     const projectString = project.skills.slice(0, -1).join(" ✧ ");
 
+    const projectType = project.skills[project.skills.length - 1];
+    const projectBorderClass = getProjectClass(projectType) + "-expanded expanded-container project-container";
+    const projectButtonClass = getProjectClass(projectType) + "-expanded expanded-button";
+
     return (
-        <div className="flex flex-col items-center justify-between w-full h-[66vh] border-2 p-4 m-2 border-lime-400 rounded-lg">
+        <div className={"flex flex-col items-center justify-between w-full h-[66vh] p-4 m-2 " + projectBorderClass}>
             <div className="flex flex-row items-center justify-between w-full">
-                <p className="text-3xl">
+                <p className="text-3xl font-bold">
                     {project.name}
                 </p>
                 <button
-                    className="text-lg border-2 border-lime-600 bg-lime-400 text-black px-2 py-1 rounded-lg hover:bg-lime-500 transition duration-300 ease-in-out" 
+                    className={"text-lg text-black " + projectButtonClass} 
                     onClick={compress}
                 >
                     go back
@@ -28,7 +33,7 @@ export default function ExpandedBox({ project, compress }) {
                         width={300}
                         height={200}
                     />
-                    <p className='text-sm'>{project.internalCaption}</p>
+                    <p className="text-sm project-shadow">{project.internalCaption}</p>
                 </div>
             </div>
             <div className="flex flex-row justify-between items-center w-full h-[10%]">

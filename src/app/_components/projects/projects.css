@@ -1,0 +1,113 @@
+:root {
+    --project-bg-transparency: 0.361;
+
+    --ml-color: 228, 96, 96;
+    --data-color: 96, 228, 228;
+    --web-color: 96, 228, 96;
+    --game-color: 228, 228, 96;
+    --ui-color: 228, 96, 228;
+    --sd-color: 96, 96, 228;
+
+    --dark-ml-color: 160, 40, 40;   
+    --dark-data-color: 40, 160, 160;
+    --dark-web-color: 40, 160, 40;
+    --dark-game-color: 160, 160, 40;
+    --dark-ui-color: 160, 40, 160;
+    --dark-sd-color: 40, 40, 160;
+}
+
+.ml-project {
+    --project-color: rgba(var(--ml-color), var(--project-bg-transparency));
+}
+
+.data-project {
+    --project-color: rgba(var(--data-color), var(--project-bg-transparency));
+}
+
+.web-project {
+    --project-color: rgba(var(--web-color), var(--project-bg-transparency));
+}
+
+.game-project {
+    --project-color: rgba(var(--game-color), var(--project-bg-transparency));
+}
+
+.ui-project {
+    --project-color: rgba(var(--ui-color), var(--project-bg-transparency));
+}
+
+.sd-project {
+    --project-color: rgba(var(--sd-color), var(--project-bg-transparency));
+}
+
+.ml-expanded {
+    --project-color: rgba(var(--ml-color), var(--project-bg-transparency));
+    --dark-color: rgb(var(--dark-ml-color));
+    --light-color: rgb(var(--ml-color));
+}
+
+.data-expanded {
+    --project-color: rgba(var(--data-color), var(--project-bg-transparency));
+    --dark-color: rgb(var(--dark-data-color));
+    --light-color: rgb(var(--data-color));
+}
+
+.web-expanded {
+    --project-color: rgba(var(--web-color), var(--project-bg-transparency));
+    --dark-color: rgb(var(--dark-web-color));
+    --light-color: rgb(var(--web-color));
+}
+
+.game-expanded {
+    --project-color: rgba(var(--game-color), var(--project-bg-transparency));
+    --dark-color: rgb(var(--dark-game-color));
+    --light-color: rgb(var(--game-color));
+}
+
+.ui-expanded {
+    --project-color: rgba(var(--ui-color), var(--project-bg-transparency));
+    --dark-color: rgb(var(--dark-ui-color));
+    --light-color: rgb(var(--ui-color));
+}
+
+.sd-expanded {
+    --project-color: rgba(var(--sd-color), var(--project-bg-transparency));
+    --dark-color: rgb(var(--dark-sd-color));
+    --light-color: rgb(var(--sd-color));
+}
+
+.project-container {
+    background-image: 
+        linear-gradient(
+            -45deg,
+            transparent 10vh,
+            var(--project-color) 10vh,
+            var(--project-color) 15vh,
+            transparent 15vh,
+            transparent 25vh,
+            var(--project-color) 25vh,
+            var(--project-color) 30vh,
+            transparent 30vh
+        );
+}
+
+.expanded-button {
+    background-color: var(--light-color);
+    border-color: var(--dark-color);
+    border-width: 3px;
+    border-radius: 0.5rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.expanded-container {
+    border-color: var(--light-color);
+    border-width: 2px;
+    border-radius: 0.5rem;
+}
+
+.project-shadow {
+    text-shadow: 2px 2px 2px black;
+}
