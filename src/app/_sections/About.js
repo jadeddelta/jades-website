@@ -20,7 +20,7 @@ export default function About() {
 
     return (
         <div className="flex flex-col items-center justify-between w-full grow gap-4 py-16" id="about">
-            <p className="text-4xl">about me</p>
+            <h2>about me</h2>
             <div className="flex flex-row items-center justify-between w-full px-[20vh] py-[5vh]">
                 <div className="w-[30vw]">
                     hello world! i&apos;m a current senior at vassar college studying for a bachelor&apos;s in computer science
@@ -33,7 +33,7 @@ export default function About() {
                     reach out if you have any questions or want to chat/collaborate!
                 </div>
             </div>
-            <p className="text-3xl">expertise</p>
+            <h3>expertise</h3>
             <div className="mt-[15vh] mb-[10vh]" style={gridStyle}>
                 {aboutList.map((item, index) => {
                     return (

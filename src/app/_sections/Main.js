@@ -16,12 +16,12 @@ export default function Main() {
             <div className="flex flex-col justify-between gap-2">
                 <div className="flex flex-row">
                     <p className="text-xl">
-                        hi there, i&apos;m
+                        hi there! i&apos;m
                     </p>
                 </div>
-                <p className="new text-7xl font-thin">
+                <h1 className="new">
                     jadeddelta
-                </p>
+                </h1>
                 <div className="flex flex-row grow">
                     <div className="flex-grow"/>
                     <p className="text-xl">
