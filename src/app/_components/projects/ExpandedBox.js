@@ -24,7 +24,7 @@ export default function ExpandedBox({ project, compress }) {
             </div>
             <div className="flex flex-row items-center">
                 <div className="columns-2 gap-4 grow text-base w-2/3">
-                    {project.complexDescription.join(' ')}
+                    {project.complexDescription}
                 </div>
                 <div className="flex flex-col items-center text-center justify-between w-1/3 pl-4 py-2 gap-1">
                     <Image 
