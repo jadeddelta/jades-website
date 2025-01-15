@@ -1,5 +1,5 @@
 import TimelineButton from "./TimelineButton";
-import TimelineDash from "./TimelineDash";
+import TimelineDescription from "./TimelineDescription";
 import { TimelineList as workInfo } from "./TimelineList";
 import { useState } from "react";
 
@@ -17,37 +17,16 @@ export default function Timeline() {
 
     return (
         <>
-            <div className="flex items-center justify-center">
-                <TimelineDash />
+            <div className="flex w-[90vw] items-start flex-col">
                 {workInfo.map((work, index) => {
+                    // TODO: do something fun with the active
                     return (
-                        <>
+                        <div key={index} className="flex pb-8 gap-4">
                             <TimelineButton job={work} active={active === index} handleClick={() => getHandler(index)}/>
-                            <TimelineDash />
-                        </>
+                            <TimelineDescription job={work} />
+                        </div>
                     );
                 })}
-            </div>
-            <div className="flex flex-col justify-center items-center p-12 w-[80vw] h-[60vh] border-2 border-dashed rounded-lg border-gray-500 m-auto gap-4">
-                {active === -1 ? (
-                    <div className="">
-                        <pre className="text-gray-500">tap a circle for more information !</pre>
-                    </div>
-                ) : (
-                    <>
-                        <p>
-                            {workInfo[active].description}
-                        </p>
-                        <ul className="list-disc w-full px-8">
-                            {workInfo[active].points.map((point, index) => {
-                                return (
-                                    // point is a hardcoded string, so XSS is not a concern
-                                    <li key={index} dangerouslySetInnerHTML={{ __html: point }}/>
-                                );
-                            })}
-                        </ul>
-                    </>
-                )}
             </div>
         </>
     );
