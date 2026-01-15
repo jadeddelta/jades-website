@@ -3,6 +3,11 @@ written in next.js, tailwindcss, and with a dash of whimsy
 
 ## running on your local machine
 
+after installing the requisite packages via
+```bash
+npm i
+```
+
 instantiate the development server with
 
 ```bash
