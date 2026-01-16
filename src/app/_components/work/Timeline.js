@@ -18,7 +18,7 @@ export default function Timeline() {
     return (
         <>
             <div className="flex w-[90vw] items-start flex-col">
-                {workInfo.map((work, index) => {
+                {workInfo.reverse().map((work, index) => {
                     // TODO: do something fun with the active
                     return (
                         <div key={index} className="flex pb-8 gap-4">

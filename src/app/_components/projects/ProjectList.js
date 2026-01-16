@@ -45,10 +45,10 @@ export const projectList = [
     name: "ASA Datafest 2024",
     simpleDescription: "Utilized NetworkX and pandas to analyze student web traffic data.",
     complexDescription: `
-        Over the weekend, we conducted data analysis on a dataset provided by CourseKata, "
-        a web-based statistics course. The dataset consisted of student web traffic data, "
-        survey, and performance data.",
-        On a team of 5 other students, my work primarily focused on data analysis and visualization. "
+        Over the weekend, we conducted data analysis on a dataset provided by CourseKata, 
+        a web-based statistics course. The dataset consisted of student web traffic data, 
+        survey, and performance data.
+        On a team of 5 other students, my work primarily focused on data analysis and visualization. 
         I used pandas to clean up and organize the data into individual student timelines, and then
         created a directed graph using that data.
         In Jupyter, I used both NetworkX and matplotlib to visualize the data, showing chapters
@@ -79,8 +79,9 @@ export const projectList = [
         The main goal was to keep the same functionality and design of the old website, but 
         eventually evolved to include a more modern design and a more consistent user experience. 
         This included aspects such as clear and intuitive test creation and display, consistent themeing
-        and a more modular and maintainable codebase. The website is currently still in development as of 
-        July 2024.
+        and a more modular and maintainable codebase. While the project currently lies in the backlog due 
+        to my current responsibilities as a full-time RSE, I am hopeful to return to it in the near future, 
+        or to mentor an existing student worker to take over the current codebase.
     `,
     skills: ["JavaScript", "Nextjs", "React", "Redux", "MaterialUI", "Web Development"],
     link: "",
@@ -106,7 +107,8 @@ export const projectList = [
         the codebase, I was able to make more substantial contribution, such as new features, bug fixes, and infrastructure improvements.
         As of now, I am a core maintainer of the project, engaging in code reviews for merge requests, issue triaging, 
         and creating new features, plugins, or extensions to better assist researchers around the world with developing 
-        their experiments."
+        their experiments. My particular focus nowadays involves 'timelines', a powerful way to structure common experimental 
+        paradigms in a reusable manner, easily sharable via npm packages for greater ease of use.
     `,
     skills: ["TypeScript", "Unit Testing w/ Jest", "Git", "Open Source Development", "Web Development"],
     link: "",
