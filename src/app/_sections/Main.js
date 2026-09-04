@@ -23,7 +23,7 @@ export default function Main() {
                     jadeddelta
                 </h1>
                 <div className="flex flex-row grow">
-                    <div className="flex-grow"/>
+                    <div className="grow"/>
                     <p className="text-xl">
                         {jobTitles[jobTitle] + " "} 
                         <a className="text-2xl font-bold" href="#" onClick={buttonClickHandler}>*</a>

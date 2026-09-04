@@ -21,7 +21,7 @@ export default function Row({ projects }) {
     }
 
     return (
-        <div className="flex flex-row flex-grow w-[90vw]">
+        <div className="flex flex-row grow w-[90vw]">
             {expanded && <ExpandedBox project={projects[expandedProject]} compress={getCompressionFunction()} />}
             {!expanded && projects.map((project, index) => (
                 <SummaryBox project={project} key={index} expand={getExpansionFunction(index)} />
