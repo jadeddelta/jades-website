@@ -5,8 +5,7 @@ export default function SummaryBox({ project, expand }) {
 
     const sizeClass = project.major ? " w-[67%] " : " w-[33%] ";
     
-    const projectType = project.skills[project.skills.length - 1];
-    const projectClass = getProjectClass(projectType) + "-project project-container";
+    const projectClass = getProjectClass(project.category[0]) + "-project project-container";
 
     return (
         <button 
@@ -20,7 +19,7 @@ export default function SummaryBox({ project, expand }) {
                 {project.simpleDescription}
             </p>
             <p className="project-shadow">
-                {projectType.toLowerCase()}
+                {project.category.join(" ✧ ").toLowerCase()}
             </p>
         </button>
     );

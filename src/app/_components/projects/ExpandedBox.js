@@ -3,11 +3,11 @@ import { getProjectClass } from './ProjectList';
 
 export default function ExpandedBox({ project, compress }) {
 
-    const projectString = project.skills.slice(0, -1).join(" ✧ ");
+    const projectString = project.skills.join(" ✧ ");
 
-    const projectType = project.skills[project.skills.length - 1];
-    const projectBorderClass = getProjectClass(projectType) + "-expanded expanded-container project-container";
-    const projectButtonClass = getProjectClass(projectType) + "-expanded expanded-button";
+    const projectClass = getProjectClass(project.category[0]);
+    const projectBorderClass = projectClass + "-expanded expanded-container project-container";
+    const projectButtonClass = projectClass + "-expanded expanded-button";
 
     return (
         <div className={"flex flex-col items-center justify-between w-full h-[66vh] p-4 m-2 " + projectBorderClass}>

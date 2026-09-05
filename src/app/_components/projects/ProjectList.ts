@@ -1,19 +1,44 @@
-/*
-    projectList is a list of projects 
-    each project is of the structure (TBUpdated):
-    {
-        name: string -> name of the project,
-        simpleDescription: string -> a simple description of the project (displayed on the non-expanded card),
-        complexDescription: string -> a more detailed description of the project (expanded card),
-        skills: string[] -> list of skills used in the project (first few are displayed non-expanded),
-        link: string -> link to the project,
-        frontImage: string -> link to the front image of the project (non-expanded card),
-        internalImage: string -> link to the internal image of the project (expanded card),
-        major: boolean -> whether the project is a major project or not,
-        insight: string -> link to the insights page of this project 
-    }
-*/
-export const projectList = [
+export const projectClasses = {
+    "Web Development": "web",
+    "Machine Learning Research": "ml",
+    "Data Analysis": "data",
+    "Game/App Development": "game",
+    "Software Development": "sd",
+    "UI/UX Design": "ui",
+} as const;
+
+export type ProjectCategory = keyof typeof projectClasses;
+
+export type ProjectClass = (typeof projectClasses)[ProjectCategory];
+
+export interface Project {
+    /** name of the project */
+    name: string;
+    /** a simple description, displayed on the non-expanded card */
+    simpleDescription: string;
+    /** a more detailed description, displayed on the expanded card */
+    complexDescription: string;
+    /** skills used in the project, displayed on the expanded card */
+    skills: string[];
+    /** categories this project falls under, typed as this to prevent non-empty arrays for now */
+    category: [ProjectCategory, ...ProjectCategory[]];
+    /** link to the project */
+    link: string;
+    /** link to the front image of the project (non-expanded card) */
+    frontImage: string;
+    /** link to the internal image of the project (expanded card) */
+    internalImage: string;
+    internalAlt: string;
+    internalCaption: string;
+    /** whether the project takes up a double-width card */
+    major: boolean;
+    /** link to the insights page of this project */
+    insight: string;
+    mediaButton: string;
+    mediaLink: string;
+}
+
+export const projectList: Project[] = [
 {
     name: "Eyetracking with Machine Learning",
     simpleDescription: "Researched into creating web camera eyetracking for all.",
@@ -28,7 +53,8 @@ export const projectList = [
         we transitioned towards custom architectures and loss functions and more varied, modular data pipelines.
         We presented our final model with a 7.18% normalized Euclidean distance error to the symposium.
     `,
-    skills: ["Python", "TensorFlow", "Keras", "OpenCV", "SLURM", "JavaScript", "Machine Learning Research"],
+    skills: ["Python", "TensorFlow", "Keras", "OpenCV", "SLURM", "JavaScript"],
+    category: ["Machine Learning Research"],
     link: "some link",
     frontImage: "some image",
     internalImage: "/internal-images/eyetracking-triplet-loss.png",
@@ -57,7 +83,8 @@ export const projectList = [
         reduce users moving from page to page.
         With this information, we won the award for Best Analysis!
     `,
-    skills: ["Python", "Jupyter Notebook", "pandas", "NetworkX", "matplotlib", "Data Analysis"],
+    skills: ["Python", "Jupyter Notebook", "pandas", "NetworkX", "matplotlib"],
+    category: ["Data Analysis"],
     link: "",
     frontImage: "",
     internalImage: "/internal-images/asa-chapter5-graph.png",
@@ -83,7 +110,8 @@ export const projectList = [
         to my current responsibilities as a full-time RSE, I am hopeful to return to it in the near future, 
         or to mentor an existing student worker to take over the current codebase.
     `,
-    skills: ["JavaScript", "Nextjs", "React", "Redux", "MaterialUI", "Web Development"],
+    skills: ["JavaScript", "Nextjs", "React", "Redux", "MaterialUI"],
+    category: ["Web Development"],
     link: "",
     frontImage: "",
     internalImage: "/internal-images/turing-machine-tests.png",
@@ -110,7 +138,8 @@ export const projectList = [
         their experiments. My particular focus nowadays involves 'timelines', a powerful way to structure common experimental 
         paradigms in a reusable manner, easily sharable via npm packages for greater ease of use.
     `,
-    skills: ["TypeScript", "Unit Testing w/ Jest", "Git", "Open Source Development", "Web Development"],
+    skills: ["TypeScript", "Unit Testing w/ Jest", "Git", "Open Source Development"],
+    category: ["Web Development"],
     link: "",
     frontImage: "",
     internalImage: "/internal-images/jspsych-cloze-test.png",
@@ -136,7 +165,8 @@ export const projectList = [
         legal start board states, and a combo/level system that acted as a reward for the user.
         The app was presented at the end of the semester, and was well received by the class.
     `,
-    skills: ["Java", "Android Studio", "Software Development Cycle", "Game/App Development"],
+    skills: ["Java", "Android Studio", "Software Development Cycle"],
+    category: ["Game/App Development"],
     link: "",
     frontImage: "",
     internalImage: "/internal-images/amethyst-title-screen.png",
@@ -162,7 +192,8 @@ export const projectList = [
         login screen for the chatbot. We were able to present our project at the end of the hackathon,
         and won the award for 'Best Use of Natural Langauge Processing.'
     `,
-    skills: ["JavaScript", "Figma", "Natural Language Processing", "UI/UX Design"],
+    skills: ["JavaScript", "Figma", "Natural Language Processing"],
+    category: ["UI/UX Design"],
     link: "",
     frontImage: "",
     internalImage: "/internal-images/talkative-login-screen.png",
@@ -187,7 +218,8 @@ export const projectList = [
         that allowed for comparison between multiple versions of the board.
         I presented my work at the end of the semester, and was well received by the class.
     `,
-    skills: ["Java", "Gradle", "Search Algorithms", "IntelliJ IDEA", "Software Development"],
+    skills: ["Java", "Gradle", "Search Algorithms", "IntelliJ IDEA"],
+    category: ["Software Development"],
     link: "",
     frontImage: "",
     internalImage: "/internal-images/chess-cli.png",
@@ -200,15 +232,7 @@ export const projectList = [
 }
 ]
 
-const projectMap = {
-    "Web Development": "web",
-    "Machine Learning Research": "ml",
-    "Data Analysis": "data",
-    "Game/App Development": "game",
-    "Software Development": "sd",
-    "UI/UX Design": "ui",
-}
-
-export const getProjectClass = (skill) => {
-    return projectMap[skill];
+/** gets the class id (abbreviated version of category) from a category name */
+export const getProjectClass = (category: ProjectCategory): ProjectClass => {
+    return projectClasses[category];
 }

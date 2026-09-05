@@ -1,4 +1,20 @@
-export const aboutList = [
+export type AboutColor =
+    | "yellow-circle"
+    | "white-circle"
+    | "purple-circle"
+    | "black-circle";
+
+export type AboutGridArea = "one" | "two" | "three" | "four";
+
+export interface AboutItem {
+    id: AboutGridArea;
+    title: string;
+    description: string;
+    color: AboutColor;
+    icon: string;
+}
+
+export const aboutList: AboutItem[] = [
     {
         id: "one",
         title: "Frontend Development",

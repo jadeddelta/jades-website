@@ -1,6 +1,16 @@
-export const TimelineList = [
+export interface TimelineEntry {
+    jobTitle: string;
+    company: string;
+    startDate: string;
+    endDate: string;
+    description: string;
+    /** hardcoded html, rendered via dangerouslySetInnerHTML */
+    points: string[];
+}
+
+export const TimelineList: TimelineEntry[] = [
 {
-    name: "Research Software Engineer",
+    jobTitle: "Research Software Engineer",
     company: "de Leeuw Lab @ Vassar College",
     startDate: "July 2025",
     endDate: "Present",
@@ -27,7 +37,7 @@ export const TimelineList = [
     ]
 },
 {
-    name: "Assistant Research Software Engineer",
+    jobTitle: "Assistant Research Software Engineer",
     company: "Vassar College",
     startDate: "September 2024",
     endDate: "May 2025",
@@ -47,7 +57,7 @@ export const TimelineList = [
     ]
 },
 {
-    name: "CogSci Programmer",
+    jobTitle: "CogSci Programmer",
     company: "Vassar College",
     startDate: "October 2023",
     endDate: "June 2024",
@@ -67,7 +77,7 @@ export const TimelineList = [
     ]
 },
 {
-    name: "ML Research Assistant",
+    jobTitle: "ML Research Assistant",
     company: "Vassar College",
     startDate: "May 2023",
     endDate: "August 2023",
@@ -88,7 +98,7 @@ export const TimelineList = [
     ]
 },
 {
-    name: "ML Research Assistant",
+    jobTitle: "ML Research Assistant",
     company: "Vassar College",
     startDate: "May 2022",
     endDate: "July 2022",
