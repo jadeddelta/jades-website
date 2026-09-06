@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { MouseEvent } from "react";
 import MainContact from "../_components/main/MainContact";
 import '../_components/main/main.css'
 
@@ -6,7 +7,7 @@ export default function Main() {
     const [jobTitle, setJobTitle] = useState(0);
     const jobTitles = ["a software engineer", "a frontend developer", "an ai enthusiast", "a budding data analyst"];
 
-    const buttonClickHandler = (e) => {
+    const buttonClickHandler = (e: MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
         setJobTitle((jobTitle + 1) % jobTitles.length);
     }

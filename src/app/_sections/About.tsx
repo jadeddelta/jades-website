@@ -1,9 +1,11 @@
+import type { CSSProperties } from "react";
 import AboutCircle from "../_components/about/AboutCircle";
 import { aboutList } from "../_components/about/AboutList";
+import type { AboutGridArea } from "../_components/about/AboutList";
 
 export default function About() {
 
-    const gridStyle = {
+    const gridStyle: CSSProperties = {
         width: "140vh",
         height: "70vh",
         display: "grid",
@@ -14,7 +16,7 @@ export default function About() {
             ". two . four"` 
     }
 
-    const getGridArea = (area) => {
+    const getGridArea = (area: AboutGridArea): CSSProperties => {
         return {gridArea: area};
     }
 

@@ -1,15 +1,16 @@
 import { projectList as data } from "../_components/projects/ProjectList";
 import Row from "../_components/projects/Row";
+import type { Project } from "../_components/projects/ProjectList";
 
 export default function Projects() {
 
-    const getRows = (projects) => {
-        let rows = [];
-        let currentRow = [];
+    const getRows = (projects: Project[]): Project[][] => {
+        const rows: Project[][] = [];
+        let currentRow: Project[] = [];
         let count = 0;
         
         for (let i = 0; i < projects.length; i++) {
-            let projectCount = projects[i].major ? 2 : 1;
+            const projectCount = projects[i].major ? 2 : 1;
 
             if (count + projectCount <= 3) {
                 currentRow.push(projects[i]);
