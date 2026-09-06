@@ -7,7 +7,7 @@ export default function Timeline() {
 
     const [active, setActive] = useState(-1);
 
-    const getHandler = (index) => {
+    const getHandler = (index: number) => {
         if (active === index) {
             setActive(-1);
         } else {
@@ -22,7 +22,7 @@ export default function Timeline() {
                     // TODO: do something fun with the active
                     return (
                         <div key={index} className="flex pb-8 gap-4">
-                            <TimelineButton job={work} active={active === index} handleClick={() => getHandler(index)}/>
+                            <TimelineButton active={active === index} handleClick={() => getHandler(index)}/>
                             <TimelineDescription job={work} />
                         </div>
                     );

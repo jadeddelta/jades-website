@@ -1,7 +1,13 @@
 import { getProjectClass } from './ProjectList';
+import type { Project } from './ProjectList';
 import './projects.css'
 
-export default function SummaryBox({ project, expand }) {
+interface SummaryBoxProps {
+    project: Project;
+    expand: () => void;
+}
+
+export default function SummaryBox({ project, expand }: SummaryBoxProps) {
 
     const sizeClass = project.major ? " w-[67%] " : " w-[33%] ";
     

@@ -1,7 +1,13 @@
 import Image from 'next/image';
 import { getProjectClass } from './ProjectList';
+import type { Project } from './ProjectList';
 
-export default function ExpandedBox({ project, compress }) {
+interface ExpandedBoxProps {
+    project: Project;
+    compress: () => void;
+}
+
+export default function ExpandedBox({ project, compress }: ExpandedBoxProps) {
 
     const projectString = project.skills.join(" ✧ ");
 

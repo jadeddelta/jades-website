@@ -1,4 +1,10 @@
-export default function TimelineDescription({ job }) {
+import type { TimelineEntry } from "./TimelineList";
+
+interface TimelineDescriptionProps {
+    job: TimelineEntry;
+}
+
+export default function TimelineDescription({ job }: TimelineDescriptionProps) {
     return (
         <div className={"text-gray-300 mr-8"}>
                 <p className="text-[#7ca183]">{job.startDate + " to " + job.endDate}</p>
