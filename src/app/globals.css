@@ -1,50 +1,68 @@
 @import "tailwindcss";
 
-/* tailwind v4 preflight drops the v3 default of cursor:pointer on buttons */
+/* design tokens, works with tailwind so we have `text-jade`, `border-jade`, and `bg-jade` */
+@theme {
+  --color-bg: #050908;
+  --color-panel: rgba(9, 20, 16, 0.58);
+  --color-jade: #35e6a4;
+  --color-jade-bright: #b8ffe4;
+  --color-forest: rgba(29, 107, 76, 0.35);
+  --color-ink: #f2fff9;
+  --color-body: #c3dbd0;
+  --color-dim: #a8c6b8;
+  --color-mono-dim: #8fb3a4;
+  --color-footer: #6f8f81;
+
+  /* font-* variables are injected by next/font in layout.tsx */
+  --font-display: var(--font-bagnard), "Iowan Old Style", Georgia, serif;
+  --font-sans: var(--font-chivo), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+}
+
+/* not colors, so they live outside @theme's color namespace. */
+:root {
+  --panel-about: linear-gradient(160deg, rgba(20, 44, 34, 0.55), rgba(7, 16, 13, 0.55));
+  --hairline: linear-gradient(90deg, rgba(53, 230, 164, 0.5), transparent);
+}
+
+/* notched panel helper classes */
+@utility notch-tr {
+  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
+}
+
+@utility notch-br {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%);
+}
+
+@utility notch-br-lg {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%);
+}
+
+/* nav pill and buttons: opposite corners cut */
+@utility notch-pill {
+  clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+}
+
 @layer base {
+  /* tailwind v4 preflight drops the v3 default of cursor:pointer on buttons */
   button:not(:disabled),
   [role="button"]:not(:disabled) {
     cursor: pointer;
   }
-}
 
-:root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 2, 22, 11;
-  --background-end-rgb: 0, 0, 0;
-}
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-body);
+    font-family: var(--font-sans);
+  }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    color: var(--color-ink);
+  }
 
-h1 {
-  font-size: 4.5rem;
-  line-height: 1;
-  font-weight: 100;
-}
-
-h2 {
-  font-size: 2.25rem;
-  line-height: 2.5rem;
-}
-
-h3 {
-  font-size: 1.875rem;
-  line-height: 2.25rem;
-}
-
-@font-face {
-  font-family: 'bagnard';
-  src: url('/fonts/Bagnard.otf');
-}
-
-.new {
-  font-family: 'bagnard';
+  h1 { font-size: clamp(58px, 9vw, 118px); line-height: 1; }
+  h2 { font-size: clamp(34px, 4.4vw, 54px); line-height: 1.05; }
+  h4 { font-size: 24px; line-height: 1.2; }
 }

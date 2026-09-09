@@ -49,12 +49,6 @@ export default function Main() {
                         image={"/icons/github.svg"} 
                         alt={"github icon"} 
                         link={"https://github.com/jadeddelta"} />
-                    <MainContact 
-                        image={"/icons/linkedin.svg"} 
-                        alt={"linkedin icon"} 
-                        link={"https://www.linkedin.com/in/ateabo/"} 
-                        auxClass={"bg-white"}
-                    />
                 </div>
             </div>
         </div>

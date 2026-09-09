@@ -1,13 +1,19 @@
+import { Fragment } from "react";
 import Link from "next/link";
+import { SECTION_IDS, SECTION_LABEL } from "./sections";
 
 export default function Navbar() {
     return (
-        <header className="flex justify-center items-center w-full h-[7.5vh] z-50 sticky top-[6px]">
-            <nav className="border-2 border-emerald-500 bg-gray-950 rounded-lg px-4 py-2">
-                <Link className="hover:text-blue-400" href="#main">home</Link>{` // `}
-                <Link className="hover:text-blue-400" href="#about">about</Link>{` // `}
-                <Link className="hover:text-blue-400" href="#projects">projects</Link>{` // `} 
-                <Link className="hover:text-blue-400" href="#work">work</Link>
+        <header className="sticky top-[6px] z-50 flex h-[7.5vh] w-full items-center justify-center">
+            <nav className="notch-pill border border-jade/40 bg-panel px-5 py-2 font-mono text-[12px] tracking-[0.1em] backdrop-blur-md">
+                {SECTION_IDS.map((id, index) => (
+                    <Fragment key={id}>
+                        {index > 0 && <span className="text-mono-dim">{` // `}</span>}
+                        <Link className="text-dim transition-colors hover:text-jade-bright" href={`#${id}`}>
+                            {SECTION_LABEL[id]}
+                        </Link>
+                    </Fragment>
+                ))}
             </nav>
         </header>
     );

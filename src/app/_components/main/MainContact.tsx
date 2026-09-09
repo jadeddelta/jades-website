@@ -5,7 +5,6 @@ interface MainContactProps {
     image: string;
     alt: string;
     link: string;
-    auxClass?: string;
 }
 
 export default function MainContact(props: MainContactProps) {
@@ -16,7 +15,7 @@ export default function MainContact(props: MainContactProps) {
     };
 
     return (
-        <div className={"flex flex-col items-center justify-center " + (props.auxClass ?? "")}>
+        <div className="flex flex-col items-center justify-center">
             <button onClick={handleClick}>
                 <Image src={props.image} alt={props.alt} width="64" height="64" />
             </button>
