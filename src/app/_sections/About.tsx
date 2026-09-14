@@ -14,11 +14,11 @@ export default function About() {
         gridTemplateAreas: `
             "one . three ."
             ". two . four"` 
-    }
+    };
 
     const getGridArea = (area: AboutGridArea): CSSProperties => {
         return {gridArea: area};
-    }
+    };
 
     return (
         <div className="flex flex-col items-center justify-between w-full grow gap-4 py-16" id="about">

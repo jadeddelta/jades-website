@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 import type { AboutColor } from './AboutList';
-import './about.css'
+import './about.css';
 
 interface AboutCircleProps {
     title: string;

@@ -16,14 +16,14 @@ export default function Row({ projects }: RowProps) {
         return () => {
             setExpanded(true);
             setExpandedProject(index);
-        }
-    }
+        };
+    };
 
     const getCompressionFunction = () => {
         return () => {
             setExpanded(false);
-        }
-    }
+        };
+    };
 
     return (
         <div className="flex flex-row grow w-[90vw]">

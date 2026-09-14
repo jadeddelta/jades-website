@@ -25,7 +25,7 @@ export default function Projects() {
         }
 
         return rows;
-    }
+    };
 
     return (
         <div className="flex flex-col items-center justify-center w-full py-16 gap-4" id="projects">

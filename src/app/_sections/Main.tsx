@@ -1,7 +1,6 @@
 import { useState } from "react";
 import type { MouseEvent } from "react";
 import MainContact from "../_components/main/MainContact";
-import '../_components/main/main.css'
 
 export default function Main() {
     const [jobTitle, setJobTitle] = useState(0);
@@ -10,29 +9,29 @@ export default function Main() {
     const buttonClickHandler = (e: MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
         setJobTitle((jobTitle + 1) % jobTitles.length);
-    }
+    };
 
     return (
-        <div className="flex flex-row items-center justify-between px-[10%] w-full h-[90vh] main-container" id="main">
+        <div className="flex flex-row items-center justify-between px-[10%] w-full h-[90vh]" id="main">
             <div className="flex flex-col justify-between gap-2">
                 <div className="flex flex-row">
-                    <p className="text-xl">
+                    <p className="text-xl font-mono hero-shade">
                         hi there! i&apos;m
                     </p>
                 </div>
-                <h1 className="new">
+                <h1 className="hero-glow text-white">
                     jadeddelta
                 </h1>
                 <div className="flex flex-row grow">
                     <div className="grow"/>
-                    <p className="text-xl">
+                    <p className="text-xl font-mono hero-shade">
                         {jobTitles[jobTitle] + " "} 
                         <a className="text-2xl font-bold" href="#" onClick={buttonClickHandler}>*</a>
                     </p>
                 </div>
             </div>
             <div className="flex flex-col gap-10">
-                <pre>
+                <pre className="font-mono hero-shade">
                 {
 `a human centric developer 
 \twith a great passion for

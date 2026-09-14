@@ -1,4 +1,4 @@
-import './work.css'
+import './work.css';
 import TimelineDash from "./TimelineDash";
 
 interface TimelineButtonProps {

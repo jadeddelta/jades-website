@@ -1,6 +1,6 @@
 import { getProjectClass } from './ProjectList';
 import type { Project } from './ProjectList';
-import './projects.css'
+import './projects.css';
 
 interface SummaryBoxProps {
     project: Project;

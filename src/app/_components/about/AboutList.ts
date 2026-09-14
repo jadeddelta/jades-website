@@ -43,4 +43,4 @@ export const aboutList: AboutItem[] = [
         color: "black-circle",
         icon: "/about-icons/something.svg"
     }
-]
+];

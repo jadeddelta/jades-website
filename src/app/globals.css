@@ -43,6 +43,23 @@
   clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
 }
 
+/* hero classes for text over the mesh: differentiate from bg */
+
+/* lighting up around the name instead */
+@utility hero-glow {
+  text-shadow:
+    0 0 28px rgba(53, 230, 164, 0.55),
+    0 0 72px rgba(53, 230, 164, 0.35),
+    0 0 140px rgba(53, 230, 164, 0.2);
+}
+
+/* everything else pushes it away */
+@utility hero-shade {
+  text-shadow:
+    0 0 12px rgba(5, 9, 8, 0.95),
+    0 0 30px rgba(5, 9, 8, 0.85);
+}
+
 @layer base {
   /* tailwind v4 preflight drops the v3 default of cursor:pointer on buttons */
   button:not(:disabled),

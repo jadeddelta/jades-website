@@ -1,5 +1,6 @@
 "use client";
 
+import TrianglePath from "./_trail/TrianglePath";
 import Navbar from "./_sections/Navbar";
 import Main from "./_sections/Main";
 import About from "./_sections/About";
@@ -9,15 +10,19 @@ import Footer from "./_sections/Footer";
 
 export default function Home() {
   return (
-    // `relative` is load-bearing: the trail will mount as the first child of this
-    // element and measures its sections against this element's box.
-    <main className="relative flex min-h-screen max-w-full flex-col items-center justify-between overflow-x-clip">
-      <Navbar />
-      <Main />
-      <About />
-      <Projects />
-      <Work />
-      <Footer />
+    // `relative` is load-bearing: the trail measures its sections against this box.
+    // trail itself is absolutely positioned and behind the website content
+    // everything else is given an explicit z-10 index 
+    <main className="relative flex min-h-screen max-w-full flex-col overflow-x-clip">
+      <TrianglePath />
+      <div className="relative z-10 flex w-full flex-col items-center">
+        <Navbar />
+        <Main />
+        <About />
+        <Projects />
+        <Work />
+        <Footer />
+      </div>
     </main>
-  )
+  );
 }

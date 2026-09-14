@@ -230,9 +230,9 @@ export const projectList: Project[] = [
     mediaButton: "",
     mediaLink: ""
 }
-]
+];
 
 /** gets the class id (abbreviated version of category) from a category name */
 export const getProjectClass = (category: ProjectCategory): ProjectClass => {
     return projectClasses[category];
-}
+};

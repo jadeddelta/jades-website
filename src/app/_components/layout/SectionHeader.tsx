@@ -1,5 +1,5 @@
-import { SECTION_KICKER } from '../../_sections/sections'
-import type { SectionId } from '../../_sections/sections'
+import { SECTION_KICKER } from '../../_sections/sections';
+import type { SectionId } from '../../_sections/sections';
 
 interface SectionHeaderProps {
   section: SectionId
@@ -7,7 +7,7 @@ interface SectionHeaderProps {
 }
 
 export default function SectionHeader({ section, title }: SectionHeaderProps) {
-  const kicker = SECTION_KICKER[section]
+  const kicker = SECTION_KICKER[section];
 
   return (
     <div className="flex w-full items-center gap-6">
@@ -17,5 +17,5 @@ export default function SectionHeader({ section, title }: SectionHeaderProps) {
       <h2>{title}</h2>
       <span className="h-px flex-1" style={{ background: 'var(--hairline)' }} />
     </div>
-  )
+  );
 }
