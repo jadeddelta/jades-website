@@ -25,6 +25,17 @@ export interface TrianglePathProps {
 const EMPTY: TrailGeometry = { tiles: [], width: 0, height: 0, ribbon: '' };
 
 /**
+ * determine if a target is an controllable page element (button, link, etc..)
+ * such that we can prevent the tiles underneath from lighting up. 
+ * we also add an opt-out attribute `data-trail-anchor` for elements that 
+ * will act as buttons on the page trail.
+ */
+const isPageControl = (target: Element | null) => {
+  const control = target?.closest?.('a, button, [role="button"], input, textarea, select');
+  return !!control && !control.hasAttribute('data-trail-anchor');
+};
+
+/**
  * the winding tiled-triangle trail and the masked dot field
  * 
  * IMPORTANT: mount as first child of scroll container, which much have 
@@ -108,7 +119,9 @@ export default function TrianglePath({
       });
     };
 
-    scheduleRebuild();
+    // immediately rebuild once instead of waiting for the next frame, so it doesn't
+    // flash an empty frame at the start
+    rebuild();
 
     const observer = new ResizeObserver(scheduleRebuild);
     observer.observe(root);
@@ -121,13 +134,25 @@ export default function TrianglePath({
       return { x: e.clientX - box.left, y: e.clientY - box.top };
     };
 
+    // moves limited to once per frame, newest event kept so the glow doesn't
+    // lag behind the cursor or light a tile the pointer has left already
+    let latestMove: MouseEvent | null = null;
     let moveQueued = false;
     const onMove = (e: MouseEvent) => {
+      latestMove = e;
       if (moveQueued) return;
       moveQueued = true;
-      const point = toLocal(e);
       requestAnimationFrame(() => {
         moveQueued = false;
+        const move = latestMove;
+        latestMove = null;
+        if (!move) return;
+        // over a control, the mesh goes dark instead of tracking the cursor
+        if (isPageControl(move.target as Element | null)) {
+          painter.setHot(null);
+          return;
+        }
+        const point = toLocal(move);
         painter.setHot(hitIndexRef.current?.nearest(point.x, point.y) ?? null);
       });
     };
@@ -138,7 +163,7 @@ export default function TrianglePath({
       const target = e.target as Element | null;
       // real controls win, and a click that ends a text selection is not a
       // request to set the whole page pulsing
-      if (target?.closest?.('a, button, [role="button"], input, textarea, select')) return;
+      if (isPageControl(target)) return;
       if (window.getSelection()?.toString()) return;
 
       const point = toLocal(e);

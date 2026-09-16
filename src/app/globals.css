@@ -60,6 +60,15 @@
     0 0 30px rgba(5, 9, 8, 0.85);
 }
 
+/* A heavier version of hero-shade for the title cycler's text, which sits
+ * directly on the densest part of the trail. */
+@utility hero-shade-strong {
+  text-shadow:
+    0 0 8px rgba(5, 9, 8, 1),
+    0 0 20px rgba(5, 9, 8, 0.95),
+    0 0 44px rgba(5, 9, 8, 0.85);
+}
+
 @layer base {
   /* tailwind v4 preflight drops the v3 default of cursor:pointer on buttons */
   button:not(:disabled),
