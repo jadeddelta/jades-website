@@ -8,7 +8,7 @@
     --ui-color: 228, 96, 228;
     --sd-color: 96, 96, 228;
 
-    --dark-ml-color: 160, 40, 40;   
+    --dark-ml-color: 160, 40, 40;
     --dark-data-color: 40, 160, 160;
     --dark-web-color: 40, 160, 40;
     --dark-game-color: 160, 160, 40;
@@ -77,18 +77,17 @@
 }
 
 .project-container {
-    background-image: 
-        linear-gradient(
-            -45deg,
-            transparent 10vh,
-            var(--project-color) 10vh,
-            var(--project-color) 15vh,
-            transparent 15vh,
-            transparent 25vh,
-            var(--project-color) 25vh,
-            var(--project-color) 30vh,
-            transparent 30vh
-        );
+    background-image: linear-gradient(
+        -45deg,
+        transparent 10vh,
+        var(--project-color) 10vh,
+        var(--project-color) 15vh,
+        transparent 15vh,
+        transparent 25vh,
+        var(--project-color) 25vh,
+        var(--project-color) 30vh,
+        transparent 30vh
+    );
 }
 
 .expanded-button {

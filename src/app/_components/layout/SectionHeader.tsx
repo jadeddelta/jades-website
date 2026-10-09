@@ -1,21 +1,18 @@
-import { SECTION_KICKER } from '../../_sections/sections';
-import type { SectionId } from '../../_sections/sections';
-
 interface SectionHeaderProps {
-  section: SectionId
-  title: string
+    title: string;
+    /**
+     * heading level, for semantics only; h1 and h2 share a size. Use "h1"
+     * when this header is the page's title, as on /about and /notes.
+     */
+    as?: "h1" | "h2";
 }
 
-export default function SectionHeader({ section, title }: SectionHeaderProps) {
-  const kicker = SECTION_KICKER[section];
-
-  return (
-    <div className="flex w-full items-center gap-6">
-      {kicker && (
-        <span className="font-mono text-[13px] tracking-[0.16em] text-mono-dim">{kicker}</span>
-      )}
-      <h2>{title}</h2>
-      <span className="h-px flex-1" style={{ background: 'var(--hairline)' }} />
-    </div>
-  );
+/** Bagnard title, then a hairline that eats the remaining width */
+export default function SectionHeader({ title, as: Heading = "h2" }: SectionHeaderProps) {
+    return (
+        <div className="flex w-full items-center gap-6">
+            <Heading>{title}</Heading>
+            <span className="h-px flex-1" style={{ background: "var(--hairline)" }} />
+        </div>
+    );
 }

@@ -1,4 +1,4 @@
-import './work.css';
+import "./work.css";
 import TimelineDash from "./TimelineDash";
 
 interface TimelineButtonProps {
@@ -7,12 +7,13 @@ interface TimelineButtonProps {
 }
 
 export default function TimelineButton({ active, handleClick }: TimelineButtonProps) {
-
     return (
         <div className={"flex flex-col items-center"}>
             <div>
-                <button className={"timeline-button-style " + (active ? "bg-white" : "")} onClick={handleClick}>
-                </button>
+                <button
+                    className={"timeline-button-style " + (active ? "bg-white" : "")}
+                    onClick={handleClick}
+                ></button>
             </div>
             <TimelineDash />
         </div>

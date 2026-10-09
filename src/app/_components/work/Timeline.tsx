@@ -1,10 +1,11 @@
+"use client";
+
 import TimelineButton from "./TimelineButton";
 import TimelineDescription from "./TimelineDescription";
-import { TimelineList as workInfo } from "./TimelineList";
+import { timeline as workInfo } from "../../_content/work";
 import { useState } from "react";
 
 export default function Timeline() {
-
     const [active, setActive] = useState(-1);
 
     const getHandler = (index: number) => {
@@ -17,12 +18,12 @@ export default function Timeline() {
 
     return (
         <>
-            <div className="flex w-[90vw] items-start flex-col">
+            <div className="flex w-full items-start flex-col">
                 {workInfo.map((work, index) => {
                     // TODO: do something fun with the active
                     return (
                         <div key={index} className="flex pb-8 gap-4">
-                            <TimelineButton active={active === index} handleClick={() => getHandler(index)}/>
+                            <TimelineButton active={active === index} handleClick={() => getHandler(index)} />
                             <TimelineDescription job={work} />
                         </div>
                     );

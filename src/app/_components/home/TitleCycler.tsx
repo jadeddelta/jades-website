@@ -6,7 +6,6 @@ interface TitleCyclerProps {
     titles: readonly string[];
 }
 
-
 export default function TitleCycler({ titles }: TitleCyclerProps) {
     const [index, setIndex] = useState(0);
 
@@ -30,12 +29,7 @@ export default function TitleCycler({ titles }: TitleCyclerProps) {
             >
                 {titles[index]}
             </span>
-            <button
-                type="button"
-                aria-label="next title"
-                onClick={() => step(1)}
-                className="group -mr-1 shrink-0 p-1"
-            >
+            <button type="button" aria-label="next title" onClick={() => step(1)} className="group -mr-1 shrink-0 p-1">
                 <span className="block h-0 w-0 border-y-[9px] border-l-[14px] border-y-transparent border-l-jade transition-colors group-hover:border-l-jade-bright" />
             </button>
         </div>

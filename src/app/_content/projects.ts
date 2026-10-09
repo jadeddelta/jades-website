@@ -9,8 +9,6 @@ export const projectClasses = {
 
 export type ProjectCategory = keyof typeof projectClasses;
 
-export type ProjectClass = (typeof projectClasses)[ProjectCategory];
-
 export interface Project {
     /** name of the project */
     name: string;
@@ -20,29 +18,33 @@ export interface Project {
     complexDescription: string;
     /** skills used in the project, displayed on the expanded card */
     skills: string[];
-    /** categories this project falls under, typed as this to prevent non-empty arrays for now */
-    category: [ProjectCategory, ...ProjectCategory[]];
-    /** link to the project */
-    link: string;
-    /** link to the front image of the project (non-expanded card) */
-    frontImage: string;
+    /** shown on the card, and picks its color stripe */
+    category: ProjectCategory;
     /** link to the internal image of the project (expanded card) */
     internalImage: string;
     internalAlt: string;
     internalCaption: string;
     /** whether the project takes up a double-width card */
     major: boolean;
+
+    /* planned, not shown on the page yet */
+
+    /** link to the project */
+    link?: string;
+    /** link to the front image of the project (non-expanded card) */
+    frontImage?: string;
     /** link to the insights page of this project */
-    insight: string;
-    mediaButton: string;
-    mediaLink: string;
+    insight?: string;
+    /** label for a media button, e.g. "see our poster!" */
+    mediaButton?: string;
+    mediaLink?: string;
 }
 
-export const projectList: Project[] = [
-{
-    name: "Eyetracking with Machine Learning",
-    simpleDescription: "Researched into creating web camera eyetracking for all.",
-    complexDescription: `
+export const projects: Project[] = [
+    {
+        name: "Eyetracking with Machine Learning",
+        simpleDescription: "Researched into creating web camera eyetracking for all.",
+        complexDescription: `
         Working under Vassar College's Undergraduate Research Summer Institute program for
         two summers over two teams, we attempted to create a deep learning model that could
         accurately predict the gaze of a user given a webcam feed.
@@ -53,24 +55,21 @@ export const projectList: Project[] = [
         we transitioned towards custom architectures and loss functions and more varied, modular data pipelines.
         We presented our final model with a 7.18% normalized Euclidean distance error to the symposium.
     `,
-    skills: ["Python", "TensorFlow", "Keras", "OpenCV", "SLURM", "JavaScript"],
-    category: ["Machine Learning Research"],
-    link: "some link",
-    frontImage: "some image",
-    internalImage: "/internal-images/eyetracking-triplet-loss.png",
-    internalAlt: "eyetracking triplet loss visualization",
-    internalCaption: "Depiction of our custom triplet loss function. The loss function is "
-        + "minimized when the blue anchor point is closer to the green positive point "
-        + "than the red negative point.",
-    major: true,
-    insight: "",
-    mediaButton: "see our poster!",
-    mediaLink: ""
-},
-{
-    name: "ASA Datafest 2024",
-    simpleDescription: "Utilized NetworkX and pandas to analyze student web traffic data.",
-    complexDescription: `
+        skills: ["Python", "TensorFlow", "Keras", "OpenCV", "SLURM", "JavaScript"],
+        category: "Machine Learning Research",
+        internalImage: "/internal-images/eyetracking-triplet-loss.PNG",
+        internalAlt: "eyetracking triplet loss visualization",
+        internalCaption:
+            "Depiction of our custom triplet loss function. The loss function is " +
+            "minimized when the blue anchor point is closer to the green positive point " +
+            "than the red negative point.",
+        major: true,
+        mediaButton: "see our poster!",
+    },
+    {
+        name: "ASA Datafest 2024",
+        simpleDescription: "Utilized NetworkX and pandas to analyze student web traffic data.",
+        complexDescription: `
         Over the weekend, we conducted data analysis on a dataset provided by CourseKata, 
         a web-based statistics course. The dataset consisted of student web traffic data, 
         survey, and performance data.
@@ -83,23 +82,18 @@ export const projectList: Project[] = [
         reduce users moving from page to page.
         With this information, we won the award for Best Analysis!
     `,
-    skills: ["Python", "Jupyter Notebook", "pandas", "NetworkX", "matplotlib"],
-    category: ["Data Analysis"],
-    link: "",
-    frontImage: "",
-    internalImage: "/internal-images/asa-chapter5-graph.png",
-    internalAlt: "data visualization network graph",
-    internalCaption: "A graph of which sections students would commonly "
-        + "return to while trying to complete Chapter 5. ",
-    major: false,
-    insight: "",
-    mediaButton: "",
-    mediaLink: ""
-},
-{
-    name: "Vassar Turing Machine Simulator",
-    simpleDescription: "Revamping an old college-owned website using modern React and Redux.",
-    complexDescription: `
+        skills: ["Python", "Jupyter Notebook", "pandas", "NetworkX", "matplotlib"],
+        category: "Data Analysis",
+        internalImage: "/internal-images/asa-chapter5-graph.png",
+        internalAlt: "data visualization network graph",
+        internalCaption:
+            "A graph of which sections students would commonly " + "return to while trying to complete Chapter 5. ",
+        major: false,
+    },
+    {
+        name: "Vassar Turing Machine Simulator",
+        simpleDescription: "Revamping an old college-owned website using modern React and Redux.",
+        complexDescription: `
         For my job at Vassar College's Cognitive Science Department, I was tasked with updating 
         a 7 year old website running on React v14 and Redux v3 to the latest versions, with 
         modern practices and design.
@@ -110,23 +104,22 @@ export const projectList: Project[] = [
         to my current responsibilities as a full-time RSE, I am hopeful to return to it in the near future, 
         or to mentor an existing student worker to take over the current codebase.
     `,
-    skills: ["JavaScript", "Nextjs", "React", "Redux", "MaterialUI"],
-    category: ["Web Development"],
-    link: "",
-    frontImage: "",
-    internalImage: "/internal-images/turing-machine-tests.png",
-    internalAlt: "updated testing display of the Turing Machine Simulator",
-    internalCaption: "A new version of the testing suite, with intuitive test status icons "
-        + "and a specific field for error codes.",
-    major: false,
-    insight: "",
-    mediaButton: "indev",
-    mediaLink: "indev"
-},
-{
-    name: "jsPsych Development",
-    simpleDescription: "Core maintainer in development for the largest open-source package for behavioral research on the web.",
-    complexDescription: `
+        skills: ["JavaScript", "Nextjs", "React", "Redux", "MaterialUI"],
+        category: "Web Development",
+        internalImage: "/internal-images/turing-machine-tests.png",
+        internalAlt: "updated testing display of the Turing Machine Simulator",
+        internalCaption:
+            "A new version of the testing suite, with intuitive test status icons " +
+            "and a specific field for error codes.",
+        major: false,
+        mediaButton: "indev",
+        mediaLink: "indev",
+    },
+    {
+        name: "jsPsych Development",
+        simpleDescription:
+            "Core maintainer in development for the largest open-source package for behavioral research on the web.",
+        complexDescription: `
         After being introduced to jsPsych through the first summer of my eyetracking research, 
         I decided to make contributions to the open-source project as my first endeavor into 
         the FOSS community.
@@ -138,23 +131,19 @@ export const projectList: Project[] = [
         their experiments. My particular focus nowadays involves 'timelines', a powerful way to structure common experimental 
         paradigms in a reusable manner, easily sharable via npm packages for greater ease of use.
     `,
-    skills: ["TypeScript", "Unit Testing w/ Jest", "Git", "Open Source Development"],
-    category: ["Web Development"],
-    link: "",
-    frontImage: "",
-    internalImage: "/internal-images/jspsych-cloze-test.png",
-    internalAlt: "a cloze test in jsPsych, showing a passage with boxes for missing words to fill in.",
-    internalCaption: "An example of the Cloze plugin, where users fill in blanks of a passage. "
-        + "I made contributions to this plugin as one of my first pull requests.",
-    major: true,
-    insight: "",
-    mediaButton: "",
-    mediaLink: ""
-},
-{
-    name: "Amethyst, A Focus Timer",
-    simpleDescription: "Constructed a unique pomodoro time management app with gamefied break periods.",
-    complexDescription: `
+        skills: ["TypeScript", "Unit Testing w/ Jest", "Git", "Open Source Development"],
+        category: "Web Development",
+        internalImage: "/internal-images/jspsych-cloze-test.png",
+        internalAlt: "a cloze test in jsPsych, showing a passage with boxes for missing words to fill in.",
+        internalCaption:
+            "An example of the Cloze plugin, where users fill in blanks of a passage. " +
+            "I made contributions to this plugin as one of my first pull requests.",
+        major: true,
+    },
+    {
+        name: "Amethyst, A Focus Timer",
+        simpleDescription: "Constructed a unique pomodoro time management app with gamefied break periods.",
+        complexDescription: `
         For Vassar's CMPU-203 class, Software Design and Implementation, students were paired up 
         and tasked to create an app in Android Studio. My partner and I decided to create a pomodoro timer 
         with a twist: gamefied break periods.
@@ -165,23 +154,19 @@ export const projectList: Project[] = [
         legal start board states, and a combo/level system that acted as a reward for the user.
         The app was presented at the end of the semester, and was well received by the class.
     `,
-    skills: ["Java", "Android Studio", "Software Development Cycle"],
-    category: ["Game/App Development"],
-    link: "",
-    frontImage: "",
-    internalImage: "/internal-images/amethyst-title-screen.png",
-    internalAlt: "homepage of the time management app, showing a purple gem and the title Amethyst.",
-    internalCaption: "The homepage of the app. Back then, my primary design program was paint.net, "
-        + "so the design focuses on simplicity and clarity.",
-    major: false,
-    insight: "",
-    mediaButton: "",
-    mediaLink: ""
-},
-{
-    name: "Talkative in MLH Hackathon",
-    simpleDescription: "Designed and implemented a chatbot that can assist users with the way they speak.",
-    complexDescription: `
+        skills: ["Java", "Android Studio", "Software Development Cycle"],
+        category: "Game/App Development",
+        internalImage: "/internal-images/amethyst-title-screen.png",
+        internalAlt: "homepage of the time management app, showing a purple gem and the title Amethyst.",
+        internalCaption:
+            "The homepage of the app. Back then, my primary design program was paint.net, " +
+            "so the design focuses on simplicity and clarity.",
+        major: false,
+    },
+    {
+        name: "Talkative in MLH Hackathon",
+        simpleDescription: "Designed and implemented a chatbot that can assist users with the way they speak.",
+        complexDescription: `
         In 2022, I participated in my first hackathon (MLH Hack with a Crew) with 2 friends.
         The theme given was similar to community, and we decided to develop a chatbot that
         could assist users in speaking more clearly and confidently.
@@ -192,22 +177,17 @@ export const projectList: Project[] = [
         login screen for the chatbot. We were able to present our project at the end of the hackathon,
         and won the award for 'Best Use of Natural Langauge Processing.'
     `,
-    skills: ["JavaScript", "Figma", "Natural Language Processing"],
-    category: ["UI/UX Design"],
-    link: "",
-    frontImage: "",
-    internalImage: "/internal-images/talkative-login-screen.png",
-    internalAlt: "talkative login screen, showing simple login fields",
-    internalCaption: "",
-    major: false,
-    insight: "",
-    mediaButton: "",
-    mediaLink: ""
-},
-{
-    name: "YAPPER Chess Program",
-    simpleDescription: "Created basic Chess engines along with a framework to compare representations.",
-    complexDescription: `
+        skills: ["JavaScript", "Figma", "Natural Language Processing"],
+        category: "UI/UX Design",
+        internalImage: "/internal-images/talkative-login-screen.png",
+        internalAlt: "talkative login screen, showing simple login fields",
+        internalCaption: "",
+        major: false,
+    },
+    {
+        name: "YAPPER Chess Program",
+        simpleDescription: "Created basic Chess engines along with a framework to compare representations.",
+        complexDescription: `
         My first advanced elective at Vassar involved creating a chess engine in Java with a group.
         The class's structure was research-oriented, focusing on different representations of
         the parts of the chess engine.
@@ -218,21 +198,11 @@ export const projectList: Project[] = [
         that allowed for comparison between multiple versions of the board.
         I presented my work at the end of the semester, and was well received by the class.
     `,
-    skills: ["Java", "Gradle", "Search Algorithms", "IntelliJ IDEA"],
-    category: ["Software Development"],
-    link: "",
-    frontImage: "",
-    internalImage: "/internal-images/chess-cli.png",
-    internalAlt: "command line interface of the YAPPER chess program",
-    internalCaption: "YAPPER's (Yet Another Paradigm Procuring chEss Representations) CLI interface.",
-    major: false,
-    insight: "",
-    mediaButton: "",
-    mediaLink: ""
-}
+        skills: ["Java", "Gradle", "Search Algorithms", "IntelliJ IDEA"],
+        category: "Software Development",
+        internalImage: "/internal-images/chess-cli.png",
+        internalAlt: "command line interface of the YAPPER chess program",
+        internalCaption: "YAPPER's (Yet Another Paradigm Procuring chEss Representations) CLI interface.",
+        major: false,
+    },
 ];
-
-/** gets the class id (abbreviated version of category) from a category name */
-export const getProjectClass = (category: ProjectCategory): ProjectClass => {
-    return projectClasses[category];
-};

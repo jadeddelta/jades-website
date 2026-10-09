@@ -1,24 +1,20 @@
-import IconLink from "../_components/main/IconLink";
-import TitleCycler from "../_components/main/TitleCycler";
+import IconLink from "./IconLink";
+import TitleCycler from "./TitleCycler";
 
-const TITLES = [
-    "a software engineer",
-    "a frontend developer",
-    "an ai enthusiast",
-    "a budding data analyst",
-] as const;
+const TITLES = ["a software engineer", "a frontend developer", "an ai enthusiast", "a budding data analyst"] as const;
 
 const MAILTO = "mailto:jadeddelta@gmail.com?subject=hello jade!";
 
-export default function Main() {
+export default function Hero() {
+    // the trail finds this section by its id, listed in _pages/home.ts
     return (
-        <section id="main" className="flex min-h-[90vh] w-full items-center px-[clamp(20px,3vw,48px)] min-[1400px]:px-[10%] py-16">
+        <section id="hero" className="page-inset flex min-h-[90vh] w-full items-center py-16">
             <div className="flex w-full flex-wrap items-center gap-x-[clamp(32px,5vw,96px)] gap-y-14">
                 <div className="mr-auto flex flex-col gap-3">
                     <p className="font-mono text-[16px] tracking-[0.04em] text-mono-dim hero-shade">
                         hi there! i&apos;m
                     </p>
-                    <h1 className="hero-glow text-white">jadeddelta</h1>
+                    <h1 className="hero-glow text-wordmark text-white">jadeddelta</h1>
                     <TitleCycler titles={TITLES} />
                 </div>
 
@@ -31,7 +27,11 @@ export default function Main() {
                     </p>
                     <div className="flex gap-3">
                         <IconLink href={MAILTO} icon="/icons/email.svg" label="email jade" />
-                        <IconLink href="https://github.com/jadeddelta" icon="/icons/github.svg" label="jade on github" />
+                        <IconLink
+                            href="https://github.com/jadeddelta"
+                            icon="/icons/github.svg"
+                            label="jade on github"
+                        />
                     </div>
                 </div>
             </div>

@@ -1,36 +1,27 @@
+"use client";
+
 import { useState } from "react";
 import ExpandedBox from "./ExpandedBox";
 import SummaryBox from "./SummaryBox";
-import type { Project } from "./ProjectList";
+import type { Project } from "../../_content/projects";
 
 interface RowProps {
     projects: Project[];
 }
 
 export default function Row({ projects }: RowProps) {
-
-    const [expanded, setExpanded] = useState(false);
-    const [expandedProject, setExpandedProject] = useState(0);
-
-    const getExpansionFunction = (index: number) => {
-        return () => {
-            setExpanded(true);
-            setExpandedProject(index);
-        };
-    };
-
-    const getCompressionFunction = () => {
-        return () => {
-            setExpanded(false);
-        };
-    };
+    // index of the project shown expanded, or null while the row shows summaries
+    const [openIndex, setOpenIndex] = useState<number | null>(null);
 
     return (
-        <div className="flex flex-row grow w-[90vw]">
-            {expanded && <ExpandedBox project={projects[expandedProject]} compress={getCompressionFunction()} />}
-            {!expanded && projects.map((project, index) => (
-                <SummaryBox project={project} key={index} expand={getExpansionFunction(index)} />
-            ))}
+        <div className="flex flex-row grow w-full">
+            {openIndex !== null ? (
+                <ExpandedBox project={projects[openIndex]} compress={() => setOpenIndex(null)} />
+            ) : (
+                projects.map((project, index) => (
+                    <SummaryBox project={project} key={index} expand={() => setOpenIndex(index)} />
+                ))
+            )}
         </div>
     );
 }
