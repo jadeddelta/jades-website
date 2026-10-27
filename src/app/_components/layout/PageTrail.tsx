@@ -21,6 +21,7 @@ export default function PageTrail() {
             sectionIds={page.sectionIds}
             buildRoute={page.buildRoute}
             heroSection={page.heroSection}
+            fullWidthSections={page.fullWidthSections}
         />
     );
 }

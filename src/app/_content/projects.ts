@@ -1,208 +1,275 @@
-export const projectClasses = {
-    "Web Development": "web",
-    "Machine Learning Research": "ml",
-    "Data Analysis": "data",
-    "Game/App Development": "game",
-    "Software Development": "sd",
-    "UI/UX Design": "ui",
-} as const;
+/** what kind of project it is, determines the stone's outline and icon colors */
+export type Category = "web" | "game" | "sw" | "ui" | "ml" | "data";
 
-export type ProjectCategory = keyof typeof projectClasses;
+/** each category's name and color (r, g, b), in the order the type filter lists them */
+export const CATEGORIES: Record<Category, { name: string; rgb: string }> = {
+    web: { name: "web development", rgb: "96,228,96" },
+    game: { name: "game / app", rgb: "228,228,96" },
+    sw: { name: "software", rgb: "140,140,255" },
+    ui: { name: "ui / ux design", rgb: "228,96,228" },
+    ml: { name: "machine learning", rgb: "228,96,96" },
+    data: { name: "data analysis", rgb: "96,228,228" },
+};
+
+/** a project's one and only language, name shared by the icon name */
+export type Language = "python" | "javascript" | "typescript" | "java" | "csharp";
+
+/** every language, in the order the language filter lists them */
+export const LANGUAGES: Language[] = ["python", "typescript", "javascript", "java", "csharp"];
 
 export interface Project {
-    /** name of the project */
     name: string;
-    /** a simple description, displayed on the non-expanded card */
-    simpleDescription: string;
-    /** a more detailed description, displayed on the expanded card */
-    complexDescription: string;
-    /** skills used in the project, displayed on the expanded card */
+    /** points, one paragraph each, each stepped in a little further than the last */
+    description: string[];
+    category: Category;
+    language: Language;
+    /** icon for the stone's top-right rhombus: a framework or tool the project used */
+    wildcardSvg: string;
+    /** icon for the stone's bottom rhombus: the project's own mark */
+    projectSvg: string;
+    /** shown along the bottom of the display; the language isn't repeated here */
     skills: string[];
-    /** shown on the card, and picks its color stripe */
-    category: ProjectCategory;
-    /** link to the internal image of the project (expanded card) */
-    internalImage: string;
-    internalAlt: string;
-    internalCaption: string;
-    /** whether the project takes up a double-width card */
-    major: boolean;
+    /** file name in public/internal-images/, e.g. "chess-cli.png" */
+    image: string;
+    imageAlt: string;
+    caption: string;
+    /** the link in the display's top-right tab, e.g. "see our poster!" */
+    linkText?: string;
+    projectLink?: string;
 
     /* planned, not shown on the page yet */
 
-    /** link to the project */
-    link?: string;
-    /** link to the front image of the project (non-expanded card) */
-    frontImage?: string;
-    /** link to the insights page of this project */
+    /** link to a note or blog post about the project */
     insight?: string;
-    /** label for a media button, e.g. "see our poster!" */
-    mediaButton?: string;
-    mediaLink?: string;
 }
 
 export const projects: Project[] = [
     {
-        name: "Eyetracking with Machine Learning",
-        simpleDescription: "Researched into creating web camera eyetracking for all.",
-        complexDescription: `
-        Working under Vassar College's Undergraduate Research Summer Institute program for
-        two summers over two teams, we attempted to create a deep learning model that could
-        accurately predict the gaze of a user given a webcam feed.
-        Our data gathering consisted of using Prolific to host jsPsych experiments, collecting
-        data of users looking at various points on the screen. Our first summer consisted of us
-        tinkering with simple CNN embedding models and LSTM models, along with our first ETL pipelines.
-        We were able to achieve around 18% distance error with our final models of the first summer. Afterwards,
-        we transitioned towards custom architectures and loss functions and more varied, modular data pipelines.
-        We presented our final model with a 7.18% normalized Euclidean distance error to the symposium.
-    `,
-        skills: ["Python", "TensorFlow", "Keras", "OpenCV", "SLURM", "JavaScript"],
-        category: "Machine Learning Research",
-        internalImage: "/internal-images/eyetracking-triplet-loss.PNG",
-        internalAlt: "eyetracking triplet loss visualization",
-        internalCaption:
-            "Depiction of our custom triplet loss function. The loss function is " +
-            "minimized when the blue anchor point is closer to the green positive point " +
-            "than the red negative point.",
-        major: true,
-        mediaButton: "see our poster!",
+        name: "saccade.js: Eyetracking for All",
+        description: [
+            "Spanning two internships, a work-study job, and a full-time job, we've created an ML model " +
+                "that can accurately predict the gaze of a user given webcam feed, allowing researchers to conduct eyetracking via laptop cameras.",
+            "The first summer, I was in charge of write experiments in jsPsych to gather the data, and also developed a CNN-LSTM model " +
+                "that had a distance error of 18%. The next summer, I wrote modular ETL pipelines to process thousands of participants' eye data, parameterized by " +
+                "facial landmarks. We wrote custom model architectures, ending with an error of 7.18%.",
+            "Afterwards, work was done on exploring how we could improve the model. We expanded upon " +
+                "hyperparameter tuning via Weights & Biases, augmented the dataset, and began to write a paper, which " +
+                "will be published soon.",
+        ],
+        category: "ml",
+        language: "python",
+        wildcardSvg: "tensorflow",
+        projectSvg: "eye",
+        skills: ["TensorFlow", "Keras", "OpenCV", "SLURM", "Experimental Design", "Prolific"],
+        image: "eyetracking-triplet-loss.PNG",
+        imageAlt: "eyetracking triplet loss visualization",
+        caption:
+            "Depiction of our triplet loss function, presented to a symposium after our second summer. Loss is minimized when " +
+            "the blue anchor point is closer to the green positive point than the red negative point.",
+        linkText: "see docs and a live demo!",
+        projectLink: "https://saccade.jspsych.org/",
     },
     {
         name: "ASA Datafest 2024",
-        simpleDescription: "Utilized NetworkX and pandas to analyze student web traffic data.",
-        complexDescription: `
-        Over the weekend, we conducted data analysis on a dataset provided by CourseKata, 
-        a web-based statistics course. The dataset consisted of student web traffic data, 
-        survey, and performance data.
-        On a team of 5 other students, my work primarily focused on data analysis and visualization. 
-        I used pandas to clean up and organize the data into individual student timelines, and then
-        created a directed graph using that data.
-        In Jupyter, I used both NetworkX and matplotlib to visualize the data, showing chapters
-        that students would commonly return to while trying to complete a specific chapter.
-        This information is useful as CourseKata can optimize their course by providing hints to
-        reduce users moving from page to page.
-        With this information, we won the award for Best Analysis!
-    `,
-        skills: ["Python", "Jupyter Notebook", "pandas", "NetworkX", "matplotlib"],
-        category: "Data Analysis",
-        internalImage: "/internal-images/asa-chapter5-graph.png",
-        internalAlt: "data visualization network graph",
-        internalCaption:
-            "A graph of which sections students would commonly " + "return to while trying to complete Chapter 5. ",
-        major: false,
+        description: [
+            "Over a weekend hackathon, on a team of 5 students, I conducted data analysis on a dataset provided by CourseKata, a web-based statistics course. " +
+                "The dataset consisted of student web traffic data, survey, and performance data.",
+            "In Jupyter Notebook, I used pandas to clean up and organize the data into individual student clickstreams to understand in what order students " +
+                "were accessing pages when working on certain chapters. With this, I aggregated the data to create multiple weighted graphs using matplotlib and NetworkX.",
+            "This information can be used by CourseKata to optimize their lessons, providing hints or recall questions to reduce friction, so students don't have to move " +
+                "from page to page. After presenting these points to the panel with corresponding graphs on specific chapters, we won the award for Best Analysis!",
+        ],
+        category: "data",
+        language: "python",
+        wildcardSvg: "pandas",
+        projectSvg: "network",
+        skills: ["Jupyter Notebook", "pandas", "NetworkX", "matplotlib"],
+        image: "asa-chapter5-graph.png",
+        imageAlt: "data visualization network graph",
+        caption:
+            "Weighted graph of which sections students would return to while on Chapter 5, which is on models. " +
+            "The thicker the line, the more students went back, indicating concepts that should be revisited in hints.",
     },
     {
-        name: "Vassar Turing Machine Simulator",
-        simpleDescription: "Revamping an old college-owned website using modern React and Redux.",
-        complexDescription: `
-        For my job at Vassar College's Cognitive Science Department, I was tasked with updating 
-        a 7 year old website running on React v14 and Redux v3 to the latest versions, with 
-        modern practices and design.
-        The main goal was to keep the same functionality and design of the old website, but 
-        eventually evolved to include a more modern design and a more consistent user experience. 
-        This included aspects such as clear and intuitive test creation and display, consistent themeing
-        and a more modular and maintainable codebase. While the project currently lies in the backlog due 
-        to my current responsibilities as a full-time RSE, I am hopeful to return to it in the near future, 
-        or to mentor an existing student worker to take over the current codebase.
-    `,
-        skills: ["JavaScript", "Nextjs", "React", "Redux", "MaterialUI"],
-        category: "Web Development",
-        internalImage: "/internal-images/turing-machine-tests.png",
-        internalAlt: "updated testing display of the Turing Machine Simulator",
-        internalCaption:
-            "A new version of the testing suite, with intuitive test status icons " +
-            "and a specific field for error codes.",
-        major: false,
-        mediaButton: "indev",
-        mediaLink: "indev",
+        name: "Turing Machine Simulator",
+        description: [
+            "During my work underneath my college's Cognitive Science Department, I was tasked with updating a 7 year old website to use modern technologies across many " +
+                "major versions, from React v14 to v18, and Redux v3 to v4. While preserving the functionality, I was also directed to modernize the interface and improve user experience.",
+            "This includes aspects such as clear and intuitive test creation, feedback, and parallelization, alongside consistent themeing and a more maintainable codebase.",
+            "While de-prioritized for the time being, the codebase is planned to be taken over and completed by a future student worker.",
+        ],
+        category: "web",
+        language: "javascript",
+        wildcardSvg: "react",
+        projectSvg: "turing-machine",
+        skills: ["React", "Redux", "Next.js", "MaterialUI"],
+        image: "turing-machine-tests.png",
+        imageAlt: "updated testing display of the Turing Machine Simulator",
+        caption:
+            "An indev version of the new testing suite, with intuitive test status icons and a specific field for error codes. " +
+            "Before, tests did not give immediate feedback and could not render statuses in parallel.",
+        linkText: "indev",
     },
     {
         name: "jsPsych Development",
-        simpleDescription:
-            "Core maintainer in development for the largest open-source package for behavioral research on the web.",
-        complexDescription: `
-        After being introduced to jsPsych through the first summer of my eyetracking research, 
-        I decided to make contributions to the open-source project as my first endeavor into 
-        the FOSS community.
-        My initial contributions were small, such as fixing typos and bugs in the documentation website, 
-        and rewording certain vocabulary to be more consistent. After gaining more familiarity with 
-        the codebase, I was able to make more substantial contribution, such as new features, bug fixes, and infrastructure improvements.
-        As of now, I am a core maintainer of the project, engaging in code reviews for merge requests, issue triaging, 
-        and creating new features, plugins, or extensions to better assist researchers around the world with developing 
-        their experiments. My particular focus nowadays involves 'timelines', a powerful way to structure common experimental 
-        paradigms in a reusable manner, easily sharable via npm packages for greater ease of use.
-    `,
-        skills: ["TypeScript", "Unit Testing w/ Jest", "Git", "Open Source Development"],
-        category: "Web Development",
-        internalImage: "/internal-images/jspsych-cloze-test.png",
-        internalAlt: "a cloze test in jsPsych, showing a passage with boxes for missing words to fill in.",
-        internalCaption:
-            "An example of the Cloze plugin, where users fill in blanks of a passage. " +
-            "I made contributions to this plugin as one of my first pull requests.",
-        major: true,
+        description: [
+            "My growth as a software developer can be viewed through my work on jsPsych, my first work on an open-source project. " +
+                "With contributions on documentation and npm visibility to learn Git workflow, and after much assistance and exploration, " +
+                "I made PRs targeting features and fixes requested by other researchers.",
+            "Soon, this would blossom into creating my own plugins, timelines, and owning parts of the core codebase for major improvements to developer usability. " +
+                "I became proficient enough to go on trial reviewing others' PRs, and became one of the 4 core maintainers of the project.",
+            "My work went on, engaging in issue triages, implementing experimental paradigms into jsPsych packages, and mentoring student workers " +
+                "on the project to bolster CI/CD workflows and open source security practices.",
+        ],
+        category: "web",
+        language: "typescript",
+        wildcardSvg: "githubactions",
+        projectSvg: "jspsych",
+        skills: ["Git", "npm", "Open Source Development", "Jest", "JavaScript Tooling", "CI/CD via Github Actions"],
+        image: "jspsych-cloze-test.png",
+        imageAlt: "a cloze test in jsPsych, showing a passage with boxes for missing words to fill in.",
+        caption:
+            "An example of plugin-cloze, where users fill in blanks of a passage. I made contributions to this plugin as one of my first pull requests, " +
+            "parameterizing case sensitivity and enabling multiple correct answers per blank.",
+        linkText: "see our docs website!",
+        projectLink: "https://www.jspsych.org/latest/",
     },
     {
         name: "Amethyst, A Focus Timer",
-        simpleDescription: "Constructed a unique pomodoro time management app with gamefied break periods.",
-        complexDescription: `
-        For Vassar's CMPU-203 class, Software Design and Implementation, students were paired up 
-        and tasked to create an app in Android Studio. My partner and I decided to create a pomodoro timer 
-        with a twist: gamefied break periods.
-        Pomodoro apps are known for their simplistic yet efficient time blocking techniques, but having 5 or 
-        so minutes for a break period seems too low. We decided to create a game in order to give the user 
-        an option for a structured yet relaxing break period.
-        I primarily handled the game development aspect of the project, creating a Match-3 game that had 
-        legal start board states, and a combo/level system that acted as a reward for the user.
-        The app was presented at the end of the semester, and was well received by the class.
-    `,
-        skills: ["Java", "Android Studio", "Software Development Cycle"],
-        category: "Game/App Development",
-        internalImage: "/internal-images/amethyst-title-screen.png",
-        internalAlt: "homepage of the time management app, showing a purple gem and the title Amethyst.",
-        internalCaption:
-            "The homepage of the app. Back then, my primary design program was paint.net, " +
-            "so the design focuses on simplicity and clarity.",
-        major: false,
+        description: [
+            "For my Software Design and Implementation class, I was paired up with a friend to create an app in Android Studio, written in Java for the purposes " +
+                "of teaching us iterative development, Agile workflows, and UML diagrams. We decided to make a pomodoro app with a gamified twist: a Match-3 break " +
+                "period with persistent state between periods and sessions.",
+            "I personally handled the Match-3 game and design, implementing a Bejeweled-like system with combos and correct move generation. Through this project, " +
+                "we learned much about collaborative app development, such as Extreme Programming, Model-View-Controller and the Android file system.",
+            "We presented the app at the end of the semester, to glowing class reviews and an amazing final score with feedback from the professor.",
+        ],
+        category: "game",
+        language: "java",
+        wildcardSvg: "android",
+        projectSvg: "amethyst",
+        skills: [
+            "Android Studio",
+            "Software Development Cycle",
+            "Pair Programming",
+            "Iterative Development",
+            "PlantUML",
+        ],
+        image: "amethyst-title-screen.png",
+        imageAlt: "homepage of the time management app, showing a purple gem and the title Amethyst.",
+        caption:
+            "A clean homepage I created for the app. Took the first time to flex the design muscles for this app... but all in paint.net.",
+        linkText: "prof's eyes only!",
     },
     {
         name: "Talkative in MLH Hackathon",
-        simpleDescription: "Designed and implemented a chatbot that can assist users with the way they speak.",
-        complexDescription: `
-        In 2022, I participated in my first hackathon (MLH Hack with a Crew) with 2 friends.
-        The theme given was similar to community, and we decided to develop a chatbot that
-        could assist users in speaking more clearly and confidently.
-        Talkative, our chatbot, would use sentiment analysis using Cohere's API to determine
-        the mood of the user's texts, and report this feedback to the user. This would 
-        be especially useful for people with speech impediments or social anxiety.
-        This was my first endeavor into UI/UX design, and I was able to create a simple yet effective
-        login screen for the chatbot. We were able to present our project at the end of the hackathon,
-        and won the award for 'Best Use of Natural Langauge Processing.'
-    `,
-        skills: ["JavaScript", "Figma", "Natural Language Processing"],
-        category: "UI/UX Design",
-        internalImage: "/internal-images/talkative-login-screen.png",
-        internalAlt: "talkative login screen, showing simple login fields",
-        internalCaption: "",
-        major: false,
+        description: [
+            "I participated in my first hackaton, MLH Hack with a Crew, in 2022 with 2 friends. With the theme of community, and our previous experiences with " +
+                "tones in communication, we decided to create a chatbot that assists users in speaking more clearly and confidently, by " +
+                "giving feedback to the user based on sentiment analysis conducted by Cohere's Natural Language Processing.",
+            "I was in charge of the UI/UX, using Figma for the first time and an implementing in Bootstrap to develop my skill on designing and building interfaces. " +
+                "Even though this work wasn't used in the end project, due to technical limitations raised by the other team members, I still consider this valuable in " +
+                "the path of developing clean and intuitive user interfaces for others.",
+            "Plus, after our project presentation, we ended up winning 'Best Use of Natural Langauge Processing'.",
+        ],
+        category: "ui",
+        language: "javascript",
+        wildcardSvg: "figma",
+        projectSvg: "talkative",
+        skills: ["Figma", "Bootstrap", "Natural Language Processing", "Cohere API"],
+        image: "talkative-login-screen.png",
+        imageAlt: "talkative login screen, showing simple login fields",
+        caption:
+            "A simple login page that I designed for the app, completely within Figma, and implemented by myself in Bootstrap.",
+        linkText: "privated",
     },
     {
         name: "YAPPER Chess Program",
-        simpleDescription: "Created basic Chess engines along with a framework to compare representations.",
-        complexDescription: `
-        My first advanced elective at Vassar involved creating a chess engine in Java with a group.
-        The class's structure was research-oriented, focusing on different representations of
-        the parts of the chess engine.
-        At the start, I created a basic chess engine that used arrays and
-        integers to represent the board and pieces. When I realized that the rest of my group
-        had not finished anything by the midpoint, I had to work independent,
-        pivoting to a comparison based approach. I created a framework using OOP principles
-        that allowed for comparison between multiple versions of the board.
-        I presented my work at the end of the semester, and was well received by the class.
-    `,
-        skills: ["Java", "Gradle", "Search Algorithms", "IntelliJ IDEA"],
-        category: "Software Development",
-        internalImage: "/internal-images/chess-cli.png",
-        internalAlt: "command line interface of the YAPPER chess program",
-        internalCaption: "YAPPER's (Yet Another Paradigm Procuring chEss Representations) CLI interface.",
-        major: false,
+        description: [
+            "My first advanced CS elective was on Intelligent Game AI, where our goal was to create a chess engine with a group over the course of the semester. " +
+                "The class was very research-oriented, focusing on different representations of chess in memory, alongside the algorithms used to conduct board scoring.",
+            "At the mid point, my group had not written a single line of code (that I am still salty about), but I was allowed to take the project into my own hands. " +
+                "I wrote a general framework using OOP principles to compare between multiple representations of the board and algorithms to parse scoring and best moves. " +
+                "I used this in a comparative analysis, seeing how modern CPUs and bytecode generation could be leveraged to make boards more efficient, leading to deeper " +
+                "searches.",
+            "In the end, I presented to the class with great marks for a one person project.",
+        ],
+        category: "sw",
+        language: "java",
+        wildcardSvg: "gradle",
+        projectSvg: "queen",
+        skills: ["Gradle", "Search Algorithms", "JVM Bytecode", "IntelliJ IDEA"],
+        image: "chess-cli.png",
+        imageAlt: "command line interface of the YAPPER chess program",
+        caption:
+            "YAPPER's (Yet Another Paradigm Procuring chEss Representations) CLI interface, in 'Game' Mode, allowing the user to play against a selection of bots.",
+        linkText: "privated",
+    },
+    {
+        name: "Deep Sea Defense",
+        description: [
+            "I participated in my first game jam: Shell We Jam 2023, with a group of 4. The theme was Deep Sea, and I brought up the idea of a " +
+                "variation on my favorite childhood genre of Tower Defense games. The idea was to play around with vision, and cover the whole " +
+                "map in darkness.",
+            "Instead, the player would use their cursor as a flash light, clicking to send a light pulse that would linger for a moment, allowing " +
+                "towers to see and fire upon enemies. Important management of one's vision is paramount to success, alongside the tower placement and economy management.",
+            "While most of the game design was architected by myself and iterated upon with discussions involving my group, and a little bit of " +
+                "work done in Unity, due to an emerging medical condition, I had to drop out. The game was received well by the panelists.",
+        ],
+        category: "game",
+        language: "csharp",
+        wildcardSvg: "unity",
+        projectSvg: "squid",
+        skills: ["Unity", "Game Design"],
+        image: "deep-sea-defense-gameplay.png",
+        imageAlt:
+            "gameplay of the game Deep Sea Defense, with a mother squid, a track leading to her, and a pocket of vision created by the player.",
+        caption:
+            "The enemies attempt to wake up the mother squid, and disturb her slumber. A player can click to light up the area, so our loyal jellyfish " +
+            "can help us. Protect the mother squid!~",
+        linkText: "try it on the web!",
+        projectLink: "https://julwang.itch.io/deep-sea-defense",
+    },
+    {
+        name: "DataPipe: OAuth Integration",
+        description: [
+            "In collaboration with the Center of Open Science, I worked on a first-party OAuth system between DataPipe and the Open Science Foundation. " +
+                "This was my first major project at my first full-time job, and it was exciting learning the technology and architecting the solution from " +
+                "the ground up, learning proper protocols for authentication on the web while designing all the components and giving the site a makeover.",
+            "This was primarily implemented in TypeScript via Firebase, creating a REST API for both authentication, and using the auth service to also " +
+                "validate requests to the OSF via a constantly refreshing token, further reducing friction as before you'd need to make a Personal Access Token.",
+            "While the OSF being used as a repository is being sunsetted, this work was foundational in further adding Google Drive, Dataverse, and Zenodo as storage providers.",
+        ],
+        category: "web",
+        language: "typescript",
+        wildcardSvg: "firebase",
+        projectSvg: "datapipe",
+        skills: ["Firebase", "Next.js", "OAuth2", "GitHub Actions", "REST API", "Python"],
+        image: "datapipe-auth.png",
+        imageAlt: "placeholder image",
+        caption: "The moment of truth: finally getting the OAuth to work and access the OSF.",
+    },
+    {
+        name: "oquest-builder",
+        description: [
+            "A lot of my free time in the past was spent on Minecraft servers with my friends, particularly with a group of people who owned a server " +
+                "themselves. One day, they had an issue concerning building .yml files for the plugin O'DailyQuests, as a lot of the team didn't have " +
+                "technical expertise and couldn't follow the format consistently.",
+            "To help bridge the gap between technical documentation and non-technical end user, I created oquest-builder, a Next.js app written in " +
+                "JavaScript that helped my friends just do that. You can select a quest type, and it will display the required fields in an easy to " +
+                "read form. You can add multiple fields for those that require it, and at the end, export to either a copyable text, or a .yml file.",
+            "They loved it, and were able to produce hundreds of quests in under an hour from this workflow simplification.",
+        ],
+        category: "game",
+        language: "javascript",
+        wildcardSvg: "nextjs",
+        projectSvg: "minecraft",
+        skills: ["Next.js"],
+        image: "oquest-builder-form.png",
+        imageAlt: "placeholder image",
+        caption:
+            "An example of the form being used to create a quest to search for pufferfish. This will get turned into a proper .yml format that can be copied or exported.",
+        linkText: "try it on the web!",
+        projectLink: "https://mellow-zuccutto-1f0574.netlify.app/",
     },
 ];

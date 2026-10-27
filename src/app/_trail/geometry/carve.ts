@@ -17,7 +17,7 @@ import {
 import type { Centerline, SectionBox, Tile } from "../types";
 
 /**
- * Ceiling on how far the perpendicular correction may widen the band sideways.
+ * ceiling on how far the perpendicular correction may widen the band sideways.
  *
  * `inBand` measures distance perpendicular to the center line, which is what
  * makes the trail read as one continuous ribbon instead of a stack of
@@ -39,6 +39,8 @@ export interface CarveInput {
     height: number;
     /** bottom of the hero, in document coords; the band behaves differently above it */
     heroEnd: number;
+    /** vertical spans, in document coords, where the band may run all the way to both page edges */
+    fullWidth?: { top: number; bottom: number }[];
     centerline: Centerline;
     sections: SectionBox[];
 }
@@ -46,7 +48,7 @@ export interface CarveInput {
 /**
  * carve the ribbon out of an infinite triangular lattice, done in 5 steps (order matters)
  */
-export function carve({ width, height, heroEnd, centerline, sections }: CarveInput): Tile[] {
+export function carve({ width, height, heroEnd, fullWidth = [], centerline, sections }: CarveInput): Tile[] {
     const { xAt, hwAt } = centerline;
 
     const rows = Math.ceil(height / ROW_H) + 1;
@@ -54,13 +56,17 @@ export function carve({ width, height, heroEnd, centerline, sections }: CarveInp
     const kMax = Math.ceil((width + 60) / HALF);
 
     const inBounds = (r: number, k: number) => {
+        if (r < 0 || r >= rows || k < kMin || k > kMax) return false;
+        // in a full-width span, edge to edge (tiles past the edge are clipped by the host)
+        const cy = centroidY(r, k);
+        if (fullWidth.some((span) => cy >= span.top && cy <= span.bottom)) return true;
         const xl = k * HALF;
         // never cross the right page edge
         if (xl + SIDE > width - PAGE_PAD) return false;
         // ...nor the left, except in the hero, where the ribbon deliberately runs
         // off-screen left
-        if (xl < PAGE_PAD && centroidY(r, k) > heroEnd) return false;
-        return r >= 0 && r < rows && k >= kMin && k <= kMax;
+        if (xl < PAGE_PAD && cy > heroEnd) return false;
+        return true;
     };
 
     /**

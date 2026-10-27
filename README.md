@@ -19,3 +19,7 @@ you can then open [http://localhost:3000](http://localhost:3000) with your brows
 ## contributions
 
 as this is a private website meant for displaying my work, contributions aren't really necessary. though, if there are any issues, feel free to contact me through GitHub issues or through my email (jadeddelta@gmail.com).
+
+## credits
+
+icons are either drawn by hand, from devicons, or for the jsPsych ones, taken from the corresponding websites.

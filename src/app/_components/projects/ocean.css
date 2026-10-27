@@ -1,0 +1,515 @@
+/* the projects page: stones and filter hexagons on the trail's lattice */
+
+/* ---- stones -------------------------------------------------------------- */
+
+/* the button covers the hexagon's box; only the hexagon itself and its card take clicks */
+.stone {
+    position: absolute;
+    pointer-events: none;
+    padding: 0;
+    border: 0;
+    background: none;
+}
+.stone-shape {
+    display: block;
+    overflow: visible;
+    pointer-events: auto;
+    clip-path: polygon(0 50%, 25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%);
+}
+.stone .rhombus {
+    fill: rgba(5, 9, 8, 0.95);
+}
+.stone .seam {
+    stroke: rgba(var(--type), 0.4);
+    stroke-width: 1;
+}
+.stone-border {
+    fill: none;
+    stroke: rgba(var(--type), 0.95);
+    stroke-width: 2.4;
+    filter: drop-shadow(0 0 6px rgba(var(--type), 0.55));
+    transition:
+        stroke-width 0.2s,
+        filter 0.2s;
+}
+.stone:hover .stone-border,
+.stone:focus-visible .stone-border {
+    stroke-width: 3.6;
+    filter: drop-shadow(0 0 16px rgba(var(--type), 0.75));
+}
+.stone:focus-visible {
+    outline: none;
+}
+
+.stone-card {
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 8px);
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: 230px;
+    padding: 5px 11px;
+    pointer-events: auto;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    line-height: 1.35;
+    letter-spacing: 0.04em;
+    text-align: center;
+    color: var(--color-ink);
+    border: 1px solid rgba(var(--type), 0.85);
+    background: rgba(9, 20, 16, 0.82);
+    backdrop-filter: blur(6px);
+    /* notched corners; the clip reaches 1px past each edge so a card that lands on a half pixel keeps its border */
+    clip-path: polygon(
+        7px -1px,
+        calc(100% + 1px) -1px,
+        calc(100% + 1px) calc(100% - 7px),
+        calc(100% - 7px) calc(100% + 1px),
+        -1px calc(100% + 1px),
+        -1px 7px
+    );
+    transition: opacity 0.22s;
+}
+
+/* filtered out: dimmed in place, outline dashed as if under the surface */
+.stone.dim {
+    opacity: 0.38;
+    filter: grayscale(0.9);
+}
+.stone.dim .stone-border {
+    stroke-dasharray: 8 7;
+    stroke-width: 2;
+    filter: none;
+}
+.stone.dim .stone-card {
+    border-style: dashed;
+}
+
+/* ---- filter hexagons ------------------------------------------------------ */
+
+.filter-cell {
+    display: block;
+    padding: 0;
+    border: 0;
+    background: none;
+}
+.filter-cell svg {
+    display: block;
+    overflow: visible;
+}
+.filter-slot {
+    fill: rgba(5, 9, 8, 0.9);
+    stroke: rgba(53, 230, 164, 0.35);
+    stroke-width: 1;
+    transition: fill 0.2s;
+}
+button.filter-cell:hover .filter-slot,
+button.filter-cell:focus-visible .filter-slot {
+    fill: rgba(var(--c), 0.14);
+}
+.filter-cell.on .filter-slot {
+    fill: rgba(var(--c), 0.34);
+    stroke: rgba(var(--c), 0.9);
+}
+.filter-cell.empty .filter-slot {
+    fill: rgba(5, 9, 8, 0.75);
+    stroke: rgba(53, 230, 164, 0.15);
+}
+.filter-cell:focus-visible {
+    outline: none;
+}
+.filter-code {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-anchor: middle;
+    fill: var(--color-mono-dim);
+}
+.filter-cell.on .filter-code {
+    fill: rgb(var(--c));
+}
+.filter-outline {
+    position: absolute;
+    overflow: visible;
+    pointer-events: none;
+}
+.filter-outline path {
+    fill: none;
+    stroke: rgba(53, 230, 164, 0.75);
+    stroke-width: 1.6;
+}
+/* the labels sit on the trail, so a dark halo keeps them readable */
+.filter-name,
+.filter-title,
+.ocean-counter {
+    text-shadow:
+        0 0 2px rgb(5, 9, 8),
+        0 0 5px rgb(5, 9, 8),
+        0 0 12px rgb(5, 9, 8),
+        0 0 26px rgba(5, 9, 8, 0.9);
+}
+.filter-name {
+    position: absolute;
+    padding: 2px 4px;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--color-mono-dim);
+}
+.filter-name:hover {
+    color: var(--color-jade-bright);
+}
+.filter-name.on {
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-decoration-color: var(--color-jade);
+    text-underline-offset: 4px;
+}
+.filter-title {
+    position: absolute;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    color: var(--color-jade);
+}
+/* the group itself isn't positioned, so its pieces are placed against the section like the stones */
+.filter-hex > * {
+    position: absolute;
+}
+
+.ocean-counter {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--color-mono-dim);
+}
+.ocean-counter button {
+    margin-left: 8px;
+    color: var(--color-jade);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+/* ---- picking a stone -------------------------------------------------------- */
+
+.stone {
+    transform-origin: 50% 50%;
+    transition:
+        opacity 0.22s,
+        filter 0.22s,
+        transform 0.24s cubic-bezier(0.5, 0, 0.75, 0);
+}
+/* sinks into its own center, under the surface */
+.stone.sunk {
+    transform: scale(0.35);
+    opacity: 0;
+    filter: blur(3px);
+}
+.stone.sunk * {
+    pointer-events: none;
+}
+.stone.resurface {
+    transition: none;
+    animation: resurface 0.15s ease-out;
+}
+@keyframes resurface {
+    from {
+        transform: scale(0.75);
+        opacity: 0.5;
+    }
+}
+
+/* while a project is open, everything else steps back */
+.ocean h1,
+.filter-hex,
+.ocean-counter {
+    transition: opacity 0.6s;
+}
+.ocean.reading h1,
+.ocean.reading .filter-hex,
+.ocean.reading .ocean-counter {
+    opacity: 0.18;
+}
+.ocean.reading .stone:not(.sunk) {
+    opacity: 0.22;
+    transition-delay: 0.4s;
+}
+
+/* the trail's section markers: measured, never seen */
+.trail-marker {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+}
+
+/* ---- the display -------------------------------------------------------------- */
+
+.display {
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 100%;
+    height: 0;
+    pointer-events: none;
+}
+.display:focus {
+    outline: none;
+}
+.display-shape {
+    position: absolute;
+    left: 0;
+    overflow: visible;
+}
+.display-cell {
+    fill: rgba(6, 12, 10, 0.95);
+    stroke: rgba(var(--type), 0.13);
+    stroke-width: 1;
+    opacity: 0;
+    pointer-events: auto;
+    transition:
+        opacity 0.35s ease-out,
+        fill 0.4s,
+        stroke 0.4s;
+}
+.display.in .display-cell {
+    opacity: 1;
+}
+.display-border {
+    fill: none;
+    stroke: rgba(var(--type), 0.95);
+    stroke-width: 2.2;
+    filter: drop-shadow(0 0 10px rgba(var(--type), 0.55));
+    opacity: 0;
+    transition:
+        opacity 0.5s 0.45s,
+        stroke 0.4s;
+}
+.display.in .display-border {
+    opacity: 1;
+}
+
+/* buttons, and everything written on the display, fade in once the cells are up */
+.display-arrow,
+.display-close,
+.display-content > * {
+    position: absolute;
+    opacity: 0;
+    pointer-events: auto;
+    transition: opacity 0.4s;
+}
+.display.in .display-arrow,
+.display.in .display-close {
+    opacity: 1;
+    transition-delay: 0.7s;
+}
+.display.in .display-content > * {
+    opacity: 1;
+    transition-delay: 0.55s;
+}
+.display.out .display-border,
+.display.out .display-arrow,
+.display.out .display-close,
+.display.out .display-content > * {
+    transition-delay: 0s;
+}
+.display.out * {
+    pointer-events: none !important;
+}
+/* after ◀ ▶, the new project's contents fade in quickly */
+.display.in .display-content {
+    animation: swap-in 0.45s;
+}
+@keyframes swap-in {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+}
+
+.display-arrow,
+.display-close {
+    padding: 0;
+    border: 0;
+    background: none;
+}
+.display-arrow svg,
+.display-close svg {
+    display: block;
+    overflow: visible;
+}
+.arrow-cell {
+    fill: rgba(6, 12, 10, 0.92);
+    stroke: rgba(53, 230, 164, 0.2);
+}
+.arrow-border {
+    fill: none;
+    stroke: rgba(53, 230, 164, 0.7);
+    stroke-width: 1.5;
+}
+.display-arrow:hover .arrow-cell,
+.display-arrow:focus-visible .arrow-cell {
+    fill: rgba(53, 230, 164, 0.14);
+}
+.arrow-glyph {
+    fill: var(--color-jade);
+    font-size: 22px;
+    text-anchor: middle;
+}
+.close-cell {
+    fill: rgba(6, 12, 10, 0.96);
+    stroke: rgba(var(--type), 0.95);
+    stroke-width: 2;
+    filter: drop-shadow(0 0 8px rgba(var(--type), 0.45));
+    transition: fill 0.15s;
+}
+.close-glyph {
+    fill: #ff5c5c;
+    font-family: var(--font-sans);
+    font-size: 36px;
+    text-anchor: middle;
+}
+.display-close:hover .close-cell,
+.display-close:focus-visible .close-cell {
+    fill: rgb(214, 64, 64);
+    stroke: #ff9c9c;
+}
+.display-close:hover .close-glyph,
+.display-close:focus-visible .close-glyph {
+    fill: #fff;
+}
+.display-arrow:focus-visible,
+.display-close:focus-visible {
+    outline: none;
+}
+
+.display-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.display-title h2 {
+    max-width: 100%;
+    white-space: nowrap;
+}
+.display-title h2.two {
+    white-space: normal;
+    line-height: 1.04;
+}
+.display-link {
+    display: grid;
+    place-items: center;
+}
+.display-link a,
+.display-link .pending {
+    padding-bottom: 2px;
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    color: rgb(var(--type));
+    border-bottom: 1px solid rgba(var(--type), 0.5);
+}
+.display-link a:hover {
+    color: #fff;
+    border-bottom-color: #fff;
+}
+.display-link .pending {
+    opacity: 0.75;
+    border-bottom-style: dashed;
+}
+
+/* the description: points, a gap between each, each stepped in further (--step) */
+.display-description {
+    overflow: auto;
+    padding-right: 6px;
+    font-size: clamp(14px, calc(9px + 0.556vw), 19px);
+    line-height: 1.52;
+    color: var(--color-body);
+}
+.display-description p {
+    padding-left: calc(var(--step, 0) * 2ch);
+}
+.display-description p + p {
+    margin-top: 0.75em;
+}
+.display-description.overflows {
+    padding-bottom: 28px;
+    mask-image: linear-gradient(to bottom, #000 82%, transparent);
+}
+.display-image {
+    overflow: hidden;
+}
+.display-caption {
+    text-align: center;
+    font-size: clamp(12px, calc(8px + 0.417vw), 15.5px);
+    line-height: 1.5;
+    color: var(--color-dim);
+}
+.display-skills {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: clamp(12px, calc(9.5px + 0.278vw), 14.5px);
+    letter-spacing: 0.05em;
+    color: rgb(var(--type));
+}
+.display-tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.chip {
+    --c: 53, 230, 164;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 6px;
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.03em;
+    color: rgb(var(--c));
+    border: 1px solid rgba(var(--c), 0.55);
+    background: rgba(var(--c), 0.1);
+}
+.chip.type {
+    --c: var(--type);
+}
+.chip svg {
+    overflow: visible;
+}
+
+/* ---- keyboard focus and reduced motion ---------------------------------------- */
+
+.stone:focus-visible .stone-border {
+    stroke: #fff;
+}
+button.filter-cell:focus-visible .filter-slot {
+    stroke: #fff;
+    stroke-width: 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .stone,
+    .display-cell,
+    .display-border,
+    .display-arrow,
+    .display-close,
+    .display-content,
+    .display-content > * {
+        transition: none !important;
+        animation: none !important;
+    }
+}

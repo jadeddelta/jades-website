@@ -6,6 +6,8 @@ import { buildCenterline } from "./geometry/centerline";
 import { carve } from "./geometry/carve";
 import { createHitIndex } from "./interaction/hitTest";
 import { createPainter } from "./interaction/painter";
+import { PULSE_EVENT, REMEASURE_EVENT } from "./events";
+import type { PulseDetail } from "./events";
 import type { HitIndex } from "./interaction/hitTest";
 import type { Painter } from "./interaction/painter";
 import type { NeonLevel } from "./theme";
@@ -19,10 +21,12 @@ export interface TrianglePathProps {
      * the whole trail. The same goes for `buildRoute`.
      */
     sectionIds: readonly string[];
-    /** the page's route through those sections, resolved against page width */
-    buildRoute: (pageWidth: number) => TrailRoute;
+    /** the page's route through those sections, resolved against page width (and, if it needs them, the sections as measured) */
+    buildRoute: (pageWidth: number, sections: SectionBox[]) => TrailRoute;
     /** section that runs off-screen left and wears an extra tile layer */
     heroSection?: string;
+    /** sections where the trail may run to both page edges */
+    fullWidthSections?: readonly string[];
     neon?: NeonLevel;
     dotOpacity?: number;
     dotSize?: number;
@@ -59,6 +63,7 @@ export default function TrianglePath({
     sectionIds,
     buildRoute,
     heroSection,
+    fullWidthSections,
     neon = "subtle",
     dotOpacity = 0.9,
     dotSize = 1,
@@ -99,6 +104,7 @@ export default function TrianglePath({
             const rootBox = root.getBoundingClientRect();
             const sections: SectionBox[] = [];
             let heroEnd = 0;
+            const fullWidth: { top: number; bottom: number }[] = [];
 
             for (const id of sectionIds) {
                 // by id rather than CSS selector, so ids never need escaping
@@ -118,13 +124,14 @@ export default function TrianglePath({
                 const top = box.top - rootBox.top;
                 sections.push({ id, top, height: box.height });
                 if (id === heroSection) heroEnd = top + box.height;
+                if (fullWidthSections?.includes(id)) fullWidth.push({ top, bottom: top + box.height });
             }
             if (!sections.length) return;
 
-            const centerline = buildCenterline(sections, buildRoute(width), sectionIds, width, height);
+            const centerline = buildCenterline(sections, buildRoute(width, sections), sectionIds, width, height);
             if (!centerline) return;
 
-            const tiles = carve({ width, height, heroEnd, centerline, sections });
+            const tiles = carve({ width, height, heroEnd, fullWidth, centerline, sections });
             const next: TrailGeometry = { tiles, width, height, ribbon: centerline.outline(height) };
 
             geometryRef.current = next;
@@ -201,9 +208,17 @@ export default function TrianglePath({
             painter.pulseFrom(tile.cx, tile.cy);
         };
 
+        // the page can ring the trail (a project opening) or have it measure again (see ./events)
+        const onPulse = (e: Event) => {
+            const { x, y, rgb } = (e as CustomEvent<PulseDetail>).detail;
+            painter.pulseFrom(x, y, rgb);
+        };
+
         root.addEventListener("mousemove", onMove, { passive: true });
         root.addEventListener("mouseleave", onLeave);
         root.addEventListener("click", onClick);
+        window.addEventListener(PULSE_EVENT, onPulse);
+        window.addEventListener(REMEASURE_EVENT, scheduleRebuild);
 
         return () => {
             disposed = true;
@@ -213,9 +228,11 @@ export default function TrianglePath({
             root.removeEventListener("mousemove", onMove);
             root.removeEventListener("mouseleave", onLeave);
             root.removeEventListener("click", onClick);
+            window.removeEventListener(PULSE_EVENT, onPulse);
+            window.removeEventListener(REMEASURE_EVENT, scheduleRebuild);
             painter.dispose();
         };
-    }, [sectionIds, buildRoute, heroSection]);
+    }, [sectionIds, buildRoute, heroSection, fullWidthSections]);
 
     return (
         <div

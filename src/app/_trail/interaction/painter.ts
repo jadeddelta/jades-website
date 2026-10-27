@@ -14,8 +14,8 @@ const PULSE_BAND = 130;
 
 export interface Painter {
     setHot: (tile: Tile | null) => void;
-    /** send a ring expanding outward from a point in document coordinates */
-    pulseFrom: (x: number, y: number) => void;
+    /** send a ring expanding outward from a point in document coordinates, in jade or "r,g,b" */
+    pulseFrom: (x: number, y: number, rgb?: string) => void;
     dispose: () => void;
 }
 
@@ -32,6 +32,8 @@ interface RingEntry {
 
 interface Pulse {
     start: number;
+    /** the ring's color, "r,g,b" */
+    rgb: string;
     /** every tile, sorted by nearest to origin */
     ring: RingEntry[];
     /** index of the first tile the trailing edge has not yet released */
@@ -105,9 +107,9 @@ export function createPainter({ tiles, elementFor }: PainterOptions): Painter {
             if (!el) continue;
             const k = 1 - Math.abs(d - front) / PULSE_BAND;
             el.style.stroke = JADE_BRIGHT;
-            el.style.fill = `rgba(${JADE_RGB},${(0.4 * k).toFixed(3)})`;
+            el.style.fill = `rgba(${pulse.rgb},${(0.4 * k).toFixed(3)})`;
             el.style.opacity = String(Math.min(1, 0.35 + 0.65 * k));
-            el.style.filter = `drop-shadow(0 0 ${(14 * k).toFixed(1)}px rgba(${JADE_RGB},.9))`;
+            el.style.filter = `drop-shadow(0 0 ${(14 * k).toFixed(1)}px rgba(${pulse.rgb},.9))`;
             lit.add(id);
         }
 
@@ -118,7 +120,7 @@ export function createPainter({ tiles, elementFor }: PainterOptions): Painter {
         pulse = null;
     };
 
-    const pulseFrom = (x: number, y: number) => {
+    const pulseFrom = (x: number, y: number, rgb = JADE_RGB) => {
         if (prefersReducedMotion()) return;
 
         const ring: RingEntry[] = tiles().map((tile) => ({
@@ -130,7 +132,7 @@ export function createPainter({ tiles, elementFor }: PainterOptions): Painter {
         // a new click restarts the ring: release whatever the last one left lit
         for (const id of [...lit]) release(id);
 
-        pulse = { start: performance.now(), ring, tail: 0 };
+        pulse = { start: performance.now(), rgb, ring, tail: 0 };
         if (frame === null) frame = requestAnimationFrame(step);
     };
 

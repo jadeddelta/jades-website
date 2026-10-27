@@ -1,4 +1,4 @@
-import type { TrailRoute, Waypoint } from "../_trail/types";
+import type { SectionBox, TrailRoute, Waypoint } from "../_trail/types";
 
 /**
  * everything trail needs to know about a page for generation.
@@ -10,9 +10,11 @@ export interface PageConfig {
     /** section ids in document order */
     sectionIds: string[];
     /** the trail's route through those sections, keyed by id and resolved against page width */
-    buildRoute: (pageWidth: number) => TrailRoute;
+    buildRoute: (pageWidth: number, sections: SectionBox[]) => TrailRoute;
     /** section that runs off-screen left and wears an extra tile layer */
     heroSection?: string;
+    /** sections where the trail may run to both page edges, instead of keeping a small margin */
+    fullWidthSections?: string[];
 }
 
 /* --- helpers for writing routes ------------------------------------------ */
