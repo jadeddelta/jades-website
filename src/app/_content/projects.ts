@@ -22,6 +22,8 @@ export interface Project {
     /** points, one paragraph each, each stepped in a little further than the last */
     description: string[];
     category: Category;
+    /** its own color in (r, g, b), in case we need a different color that's not jade or the field (work page) */
+    rgb: string;
     language: Language;
     /** icon for the stone's top-right rhombus: a framework or tool the project used */
     wildcardSvg: string;
@@ -57,6 +59,7 @@ export const projects: Project[] = [
                 "will be published soon.",
         ],
         category: "ml",
+        rgb: "255,122,107", // coral
         language: "python",
         wildcardSvg: "tensorflow",
         projectSvg: "eye",
@@ -80,6 +83,7 @@ export const projects: Project[] = [
                 "from page to page. After presenting these points to the panel with corresponding graphs on specific chapters, we won the award for Best Analysis!",
         ],
         category: "data",
+        rgb: "255,214,102", // sun
         language: "python",
         wildcardSvg: "pandas",
         projectSvg: "network",
@@ -99,6 +103,7 @@ export const projects: Project[] = [
             "While de-prioritized for the time being, the codebase is planned to be taken over and completed by a future student worker.",
         ],
         category: "web",
+        rgb: "255,164,72", // amber
         language: "javascript",
         wildcardSvg: "react",
         projectSvg: "turing-machine",
@@ -122,6 +127,7 @@ export const projects: Project[] = [
                 "on the project to bolster CI/CD workflows and open source security practices.",
         ],
         category: "web",
+        rgb: "168,140,255", // violet
         language: "typescript",
         wildcardSvg: "githubactions",
         projectSvg: "jspsych",
@@ -145,6 +151,7 @@ export const projects: Project[] = [
             "We presented the app at the end of the semester, to glowing class reviews and an amazing final score with feedback from the professor.",
         ],
         category: "game",
+        rgb: "222,112,232", // orchid
         language: "java",
         wildcardSvg: "android",
         projectSvg: "amethyst",
@@ -173,6 +180,7 @@ export const projects: Project[] = [
             "Plus, after our project presentation, we ended up winning 'Best Use of Natural Langauge Processing'.",
         ],
         category: "ui",
+        rgb: "255,140,190", // rose
         language: "javascript",
         wildcardSvg: "figma",
         projectSvg: "talkative",
@@ -195,6 +203,7 @@ export const projects: Project[] = [
             "In the end, I presented to the class with great marks for a one person project.",
         ],
         category: "sw",
+        rgb: "214,206,178", // bone
         language: "java",
         wildcardSvg: "gradle",
         projectSvg: "queen",
@@ -217,6 +226,7 @@ export const projects: Project[] = [
                 "work done in Unity, due to an emerging medical condition, I had to drop out. The game was received well by the panelists.",
         ],
         category: "game",
+        rgb: "70,150,255", // deep blue
         language: "csharp",
         wildcardSvg: "unity",
         projectSvg: "squid",
@@ -241,6 +251,7 @@ export const projects: Project[] = [
             "While the OSF being used as a repository is being sunsetted, this work was foundational in further adding Google Drive, Dataverse, and Zenodo as storage providers.",
         ],
         category: "web",
+        rgb: "100,214,255", // sky
         language: "typescript",
         wildcardSvg: "firebase",
         projectSvg: "datapipe",
@@ -261,6 +272,7 @@ export const projects: Project[] = [
             "They loved it, and were able to produce hundreds of quests in under an hour from this workflow simplification.",
         ],
         category: "game",
+        rgb: "150,215,90", // grass
         language: "javascript",
         wildcardSvg: "nextjs",
         projectSvg: "minecraft",

@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import type { RefObject } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ROW_H } from "../../_trail/geometry/lattice";
 import { vertexPoint } from "../../_trail/geometry/shapes";
 import type { Point } from "../../_trail/geometry/shapes";
@@ -13,8 +12,9 @@ import FilterHex from "./FilterHex";
 import type { FilterOption } from "./FilterHex";
 import Stone from "./Stone";
 import type { StoneIcons } from "./Stone";
-import { layoutDisplay, oceanHeader, oceanSlots } from "./layout";
+import { layoutDisplay, oceanBottom, oceanHeader, oceanSlots } from "./layout";
 import { useDisplayScroll } from "./useDisplayScroll";
+import { usePlacement } from "../layout/usePlacement";
 import "./ocean.css";
 
 const JADE = "53,230,164";
@@ -24,29 +24,6 @@ const FOLD_TIME = 950;
 interface OceanProps {
     stones: { project: Project; icons: StoneIcons }[];
     languageIcons: Record<Language, string>;
-}
-
-/**
- * returns the padge width and where a ref starts, in document px. stones are
- * laid out on the trail lattice, so nothing is drawn until these are shown,
- * but are 0 on the server.
- */
-function usePlacement(ref: RefObject<HTMLElement | null>) {
-    const snapshot = useSyncExternalStore(
-        (onChange) => {
-            const observer = new ResizeObserver(onChange);
-            observer.observe(document.documentElement);
-            addEventListener("resize", onChange);
-            return () => {
-                observer.disconnect();
-                removeEventListener("resize", onChange);
-            };
-        },
-        () => (ref.current ? `${document.documentElement.clientWidth}|${ref.current.offsetTop}` : "0|0"),
-        () => "0|0",
-    );
-    const [width, top] = snapshot.split("|").map(Number);
-    return { width, top };
 }
 
 /**
@@ -89,7 +66,7 @@ export default function Ocean({ stones, languageIcons }: OceanProps) {
     const display = layoutDisplay(width, header.firstRow - 1);
     const displayTop = display.r0 * ROW_H;
     const displayBottom = (display.r0 + display.spec.R) * ROW_H;
-    const bottom = Math.max((header.firstRow + 3 * (rows - 1) + 1) * ROW_H + 90, displayBottom + 60);
+    const bottom = oceanBottom(header.firstRow, rows, display);
 
     // the trail measures its markers (below); tell it when they've moved
     useEffect(() => {

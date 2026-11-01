@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
-import Timeline from "../_components/work/Timeline";
+import WorkTimeline from "../_components/work/WorkTimeline";
+import { loadIcon } from "../_content/icons";
+import { projects } from "../_content/projects";
+import { timeline } from "../_content/work";
 
 export const metadata: Metadata = {
     title: "work",
@@ -7,11 +10,10 @@ export const metadata: Metadata = {
 };
 
 export default function WorkPage() {
-    // the trail finds this section by its id, listed in _pages/work.ts
-    return (
-        <div className="page-inset flex flex-col items-center w-full gap-8 py-16" id="work">
-            <h1>professional experience</h1>
-            <Timeline />
-        </div>
-    );
+    // the stones show each project's own mark, and its display shows its language's icon
+    const used = projects.filter((project) => timeline.some((job) => job.projects.includes(project.name)));
+    const names = new Set(used.flatMap((project) => [project.projectSvg, project.language]));
+    const icons = Object.fromEntries([...names].map((name) => [name, loadIcon(name)]));
+
+    return <WorkTimeline icons={icons} />;
 }

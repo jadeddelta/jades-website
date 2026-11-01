@@ -28,8 +28,13 @@ interface DisplayProps {
     origin: Point;
     /** set when the display is folding away: the point it folds toward */
     closingToward?: Point;
-    /** a ring through the display's cells, e.g. from the ◀ ▶ that was pressed; a new key runs it */
+    /** a ring through the display's cells, e.g. from the left/right buttons that were pressed; a new key runs it */
     ring?: { x: number; y: number; key: number };
+    /** display's default color (for use in work timeline) */
+    rgb?: string;
+    /** ms before the cells nearest the origin start to rise (the rest of the opening keeps its spacing after it) */
+    lead?: number;
+    /** the left/right buttons are only drawn when these are given */
     onPrev?: () => void;
     onNext?: () => void;
     onClose?: () => void;
@@ -49,7 +54,7 @@ function ArrowButton({
     originY: number;
     label: string;
     glyph: string;
-    onClick?: () => void;
+    onClick: () => void;
 }) {
     const [x, y] = vertexPoint(center);
     const cells = hexCells(center.m, center.l);
@@ -93,9 +98,10 @@ function ArrowButton({
  * bottom-left notch: programming language || bottom-right notch: programming field
  */
 export default function Display(props: DisplayProps) {
-    const { project, languageIcon, layout, width, originY, origin, closingToward, ring } = props;
+    const { project, languageIcon, layout, width, originY, origin, closingToward, ring, lead = 260 } = props;
     const { spec, r0, cells, close, arrows, boxes } = layout;
-    const rgb = CATEGORIES[project.category].rgb;
+    const field = CATEGORIES[project.category];
+    const rgb = props.rgb ?? field.rgb;
     const shapeTop = r0 * ROW_H;
     const shapeHeight = spec.R * ROW_H;
     const allCells: Cell[] = [...cells.body, ...cells.title, ...cells.image, ...cells.languages, ...cells.type];
@@ -166,7 +172,7 @@ export default function Display(props: DisplayProps) {
     const delay = (cell: Cell) => {
         const [x, y] = cellCenter(cell);
         if (closingToward) return Math.max(0, 600 - Math.hypot(x - closingToward[0], y - closingToward[1]) / 1.6);
-        return 260 + Math.min(900, Math.hypot(x - origin[0], y - origin[1]) / 1.6);
+        return lead + Math.min(900, Math.hypot(x - origin[0], y - origin[1]) / 1.6);
     };
     const closeBox = { left: close.k * HALF, top: close.r * ROW_H, width: SIDE, height: ROW_H };
     const link = project.linkText ?? "view project";
@@ -178,7 +184,7 @@ export default function Display(props: DisplayProps) {
             aria-label={project.name}
             tabIndex={-1}
             className={"display" + (shown && !closingToward ? " in" : "") + (closingToward ? " out" : "")}
-            style={{ "--type": rgb } as CSSProperties}
+            style={{ "--type": rgb, "--lead": `${lead}ms` } as CSSProperties}
         >
             <svg
                 className="display-shape"
@@ -207,20 +213,24 @@ export default function Display(props: DisplayProps) {
                 <path d={pathD(outline(allCells))} className="display-border" />
             </svg>
 
-            <ArrowButton
-                center={arrows.left}
-                originY={originY}
-                label="previous project"
-                glyph="◀"
-                onClick={props.onPrev}
-            />
-            <ArrowButton
-                center={arrows.right}
-                originY={originY}
-                label="next project"
-                glyph="▶"
-                onClick={props.onNext}
-            />
+            {props.onPrev && (
+                <ArrowButton
+                    center={arrows.left}
+                    originY={originY}
+                    label="previous project"
+                    glyph="◀"
+                    onClick={props.onPrev}
+                />
+            )}
+            {props.onNext && (
+                <ArrowButton
+                    center={arrows.right}
+                    originY={originY}
+                    label="next project"
+                    glyph="▶"
+                    onClick={props.onNext}
+                />
+            )}
             <button
                 type="button"
                 className="display-close"
@@ -299,7 +309,10 @@ export default function Display(props: DisplayProps) {
                     </span>
                 </div>
                 <div className="display-tab" style={place(boxes.type)}>
-                    <span className="chip type">{CATEGORIES[project.category].name}</span>
+                    {/* always in the field's own color, even when the display has another */}
+                    <span className="chip type" style={{ "--c": field.rgb } as CSSProperties}>
+                        {field.name}
+                    </span>
                 </div>
             </div>
         </div>

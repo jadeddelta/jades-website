@@ -51,6 +51,15 @@ export function oceanSlots(width: number, count: number, firstRow: number) {
     return { slots, rows };
 }
 
+/**
+ * returns where the ocean section ends (either below the last row of stones or
+ * the display, whichever is lower)
+ */
+export function oceanBottom(firstRow: number, rows: number, display: DisplayLayout) {
+    const displayBottom = (display.r0 + display.spec.R) * ROW_H;
+    return Math.max((firstRow + 3 * (rows - 1) + 1) * ROW_H + 90, displayBottom + 60);
+}
+
 /* ---- the project display -------------------------------------------------- */
 
 /**
