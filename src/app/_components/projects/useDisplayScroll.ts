@@ -1,7 +1,10 @@
 import { useEffect, useRef } from "react";
+import { ROW_H } from "../../_trail/geometry/lattice";
 
 /*
- * the page scrolls for the display as little as it can:
+ * the display opens with its middle as near the window's middle as the lattice
+ * allows, wherever the page is scrolled to (see displayRow). the page then
+ * scrolls for it as little as it can:
  *  1. opening a project scrolls only if the display doesn't already fit in the
  *     window below the nav, and then only as far as it has to (the test is the
  *     window's height, never its width)
@@ -11,6 +14,19 @@ import { useEffect, useRef } from "react";
 
 const MARGIN = 16;
 const behavior = (): ScrollBehavior => (matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth");
+const navBottom = () => document.querySelector("header")?.getBoundingClientRect().bottom ?? 0;
+
+/**
+ * returns the lattice row to put the top of the display on from a given `rows` tall.
+ * ensures the middle is as near as middle as the grid allows (or the row below), but
+ * never tucked under the nav or hanging off the page
+ */
+export function displayRow(rows: number) {
+    const centered = Math.ceil((scrollY + innerHeight / 2) / ROW_H - rows / 2);
+    const belowNav = Math.ceil((scrollY + navBottom()) / ROW_H);
+    const lastFit = Math.floor(document.documentElement.scrollHeight / ROW_H) - rows;
+    return Math.min(Math.max(centered, belowNav), lastFit);
+}
 
 /**
  * tries to scroll the page as little as it can, by nudging the display down to fit the project
@@ -60,12 +76,13 @@ export function useDisplayScroll() {
     return {
         /** call when the display opens; top and bottom in document px */
         reveal(top: number, bottom: number) {
-            const navBottom = document.querySelector("header")?.getBoundingClientRect().bottom ?? 0;
-            const viewTop = scrollY + navBottom + MARGIN;
+            const nav = navBottom();
+            // the header already has room under the nav, so the display may start right at its bottom
+            const viewTop = scrollY + nav;
             const viewBottom = scrollY + innerHeight - MARGIN;
             let y: number | null = null;
-            // too tall, or above: line its top up under the nav; below: bring its bottom up
-            if (bottom - top > viewBottom - viewTop || top < viewTop) y = top - navBottom - MARGIN;
+            // too tall or high: line the top up under the nav || below: bring the bottom up
+            if (bottom - top > viewBottom - viewTop || top < viewTop) y = top - nav - MARGIN;
             else if (bottom > viewBottom) y = bottom - innerHeight + MARGIN;
             memo.current = { from: scrollY, moved: y !== null, manual: false };
             rest.current = scrollY;

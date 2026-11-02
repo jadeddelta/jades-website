@@ -13,7 +13,7 @@ import type { FilterOption } from "./FilterHex";
 import Stone from "./Stone";
 import type { StoneIcons } from "./Stone";
 import { layoutDisplay, oceanBottom, oceanHeader, oceanSlots } from "./layout";
-import { useDisplayScroll } from "./useDisplayScroll";
+import { displayRow, useDisplayScroll } from "./useDisplayScroll";
 import { usePlacement } from "../layout/usePlacement";
 import "./ocean.css";
 
@@ -43,6 +43,8 @@ export default function Ocean({ stones, languageIcons }: OceanProps) {
     /** a new display key for each fresh open, remains the same on arrow buttons or on close */
     const [session, setSession] = useState(0);
     const [origin, setOrigin] = useState<Point>([0, 0]);
+    /** the lattice row the display's top sits on, picked when it opens */
+    const [row, setRow] = useState(0);
     const [ring, setRing] = useState<{ x: number; y: number; key: number }>();
     const count = useRef(0);
     const foldTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
@@ -62,11 +64,12 @@ export default function Ocean({ stones, languageIcons }: OceanProps) {
     const base = Math.ceil(top / ROW_H) - 1;
     const header = oceanHeader(width, base);
     const { slots, rows } = oceanSlots(width, stones.length, header.firstRow);
-    // the display's top row is level with the first stones' tops, where the trail meets it
-    const display = layoutDisplay(width, header.firstRow - 1);
-    const displayTop = display.r0 * ROW_H;
-    const displayBottom = (display.r0 + display.spec.R) * ROW_H;
-    const bottom = oceanBottom(header.firstRow, rows, display);
+    // the trail and the section's height are worked out for the display's home, leveled with the first stones' tops
+    const home = layoutDisplay(width, header.firstRow - 1);
+    const homeTop = home.r0 * ROW_H;
+    const bottom = oceanBottom(header.firstRow, rows, home);
+    // open in the middle of the window
+    const display = layoutDisplay(width, row);
 
     // the trail measures its markers (below); tell it when they've moved
     useEffect(() => {
@@ -87,10 +90,12 @@ export default function Ocean({ stones, languageIcons }: OceanProps) {
         setSession((s) => s + 1);
         setRing(undefined);
         const [x, y] = centerOf(i);
+        const r0 = displayRow(home.spec.R);
         setOrigin([x, y]);
+        setRow(r0);
         setOpen(i);
         pulseTrail(x, y, CATEGORIES[stones[i].project.category].rgb);
-        scroll.reveal(displayTop, displayBottom);
+        scroll.reveal(r0 * ROW_H, (r0 + home.spec.R) * ROW_H);
     };
 
     const switchTo = (i: number, dir: number) => {
@@ -173,11 +178,11 @@ export default function Ocean({ stones, languageIcons }: OceanProps) {
             {width > 0 && (
                 <>
                     {/* the trail finds these by id, listed in _pages/projects.ts: in from the top, then through the ocean */}
-                    <div id="projects-inflow" className="trail-marker" style={{ top: 0, height: displayTop - top }} />
+                    <div id="projects-inflow" className="trail-marker" style={{ top: 0, height: homeTop - top }} />
                     <div
                         id="projects-ocean"
                         className="trail-marker"
-                        style={{ top: displayTop - top, height: bottom - displayTop }}
+                        style={{ top: homeTop - top, height: bottom - homeTop }}
                     />
 
                     <FilterHex

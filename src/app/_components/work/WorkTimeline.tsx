@@ -10,7 +10,7 @@ import type { Project } from "../../_content/projects";
 import { timeline } from "../../_content/work";
 import Display from "../projects/Display";
 import { layoutDisplay } from "../projects/layout";
-import { useDisplayScroll } from "../projects/useDisplayScroll";
+import { displayRow, useDisplayScroll } from "../projects/useDisplayScroll";
 import { usePlacement } from "../layout/usePlacement";
 import { stableHtml } from "../stableHtml";
 import JobStone from "./JobStone";
@@ -87,13 +87,8 @@ export default function WorkTimeline({ icons }: WorkTimelineProps) {
     const pick = (job: number, project: Project, origin: Point) => {
         clearTimeout(foldTimer.current);
         setClosing(null);
-        // as close to the stone as it can be while all of it is in the window (below the nav)
-        const navBottom = document.querySelector("header")?.getBoundingClientRect().bottom ?? 0;
-        const firstRow = Math.ceil((scrollY + navBottom + 10) / ROW_H);
-        const lastRow = Math.floor((scrollY + innerHeight - 10) / ROW_H);
         const R = layoutDisplay(width, 0).spec.R;
-        const stoneTop = places[job].center.l - 1;
-        const r0 = lastRow - R < firstRow ? firstRow : Math.max(firstRow, Math.min(stoneTop, lastRow - R));
+        const r0 = displayRow(R);
         setSession((s) => s + 1);
         setOpen({ job, project, origin, r0 });
         pulseTrail(origin[0], origin[1], project.rgb);
