@@ -1,10 +1,10 @@
 interface SectionHeaderProps {
     title: string;
     /**
-     * heading level, for semantics only; h1 and h2 share a size. Use "h1"
-     * when this header is the page's title, as on /about and /notes.
+     * heading level; h1 and h2 share a size, h3 is a smaller subheader. Use
+     * "h1" when this header is the page's title, as on /about and /notes.
      */
-    as?: "h1" | "h2";
+    as?: "h1" | "h2" | "h3";
 }
 
 /** Bagnard title, then a hairline that eats the remaining width */
