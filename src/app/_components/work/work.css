@@ -1,12 +1,239 @@
-.timeline-button-style {
-    width: 4rem;
-    height: 4rem;
-    border-width: 4px;
-    border-radius: 9999px;
-    border-color: rgb(255 255 255);
-    transition: background-color 0.5s;
+/* the work page: a stone per job down the trail, with its title and company lines and its dates beside it */
+
+.work > .job > *,
+.work .job-stone {
+    position: absolute;
 }
 
-.timeline-button-style:hover {
-    background-color: rgb(255 255 255);
+/* ---- the stone and its two lines ------------------------------------------------ */
+
+.job-stone {
+    overflow: visible;
+    pointer-events: none;
+}
+.line-cells {
+    fill: rgba(6, 12, 10, 0.9);
+    stroke-linejoin: round;
+}
+.line-cells.title {
+    stroke: rgba(53, 230, 164, 0.9);
+    stroke-width: 2;
+    filter: drop-shadow(0 0 4px rgba(53, 230, 164, 0.25));
+}
+.line-cells.lower {
+    fill: rgba(6, 12, 10, 0.86);
+    stroke: rgba(111, 143, 129, 0.75);
+    stroke-width: 1.5;
+}
+.hex-outline {
+    fill: none;
+    stroke-linejoin: round;
+    stroke: rgba(53, 230, 164, 0.95);
+    stroke-width: 2.4;
+    filter: drop-shadow(0 0 7px rgba(53, 230, 164, 0.5));
+}
+.job-stone .seam {
+    stroke: rgba(168, 198, 184, 0.28);
+    stroke-width: 1;
+}
+
+/* opaque rhombi to not show grid lines behind */
+.job-stone .rhombus {
+    fill: rgb(5, 9, 8);
+    transition: fill 0.2s;
+}
+.job-stone .rhombus.inert {
+    fill: color-mix(in srgb, rgb(120, 134, 128) 16%, rgb(5, 9, 8));
+    stroke: rgba(150, 164, 158, 0.3);
+    stroke-width: 1;
+}
+.rhombus-button {
+    pointer-events: auto;
+    cursor: pointer;
+    outline: none;
+}
+.rhombus-edge {
+    fill: none;
+    stroke: rgba(var(--c), 0.45);
+    stroke-width: 1.2;
+    transition:
+        stroke 0.2s,
+        stroke-width 0.2s,
+        filter 0.2s;
+}
+.rhombus-icon {
+    transition: opacity 0.2s;
+}
+.rhombus-button.lit .rhombus,
+.rhombus-button.picked .rhombus {
+    fill: color-mix(in srgb, rgb(var(--c)) 20%, rgb(5, 9, 8));
+}
+.rhombus-button.lit .rhombus-edge,
+.rhombus-button.picked .rhombus-edge {
+    stroke: rgba(var(--c), 1);
+    stroke-width: 2.6;
+    filter: drop-shadow(0 0 9px rgba(var(--c), 0.8));
+}
+.rhombus-button:focus-visible .rhombus-edge {
+    stroke: #fff;
+}
+/* in a job where one rhombus is pointed at, the others step back */
+.job.pointing .rhombus-button:not(.lit) .rhombus-icon {
+    opacity: 0.45;
+}
+
+/* ---- text on the lines ------------------------------------------------------------ */
+
+.job-title,
+.job-lower {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    pointer-events: none;
+}
+.job-title h2 {
+    /* its own width, so it can be measured against the line */
+    width: max-content;
+    font-size: clamp(23px, calc(3px + 1.9vw), 38px);
+    line-height: 1.08;
+    white-space: nowrap;
+}
+.job-lower {
+    display: grid;
+    align-items: center;
+    justify-content: start;
+}
+/* layout.ts and JobStone.tsx work out widths from this size and spacing (mono, so 0.69em a character) */
+.job-lower > span {
+    grid-area: 1 / 1;
+    font-family: var(--font-mono);
+    font-size: 17px;
+    letter-spacing: 0.09em;
+    white-space: nowrap;
+    transition: opacity 0.18s;
+}
+.job-lower .lower-text {
+    color: var(--color-mono-dim);
+}
+.job-lower .naming-label {
+    opacity: 0;
+    color: rgb(var(--c, 168, 198, 184));
+}
+.job-lower.naming .lower-text {
+    opacity: 0;
+}
+.job-lower.naming .naming-label {
+    opacity: 1;
+}
+
+/*
+ * most recent at the top: end date, "to", start date, right up against the hexagon's left point.
+ * layout.ts works out the widest dates from this size and spacing (mono, so 0.66em a character)
+ */
+.job-dates {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    transform: translate(-100%, -50%);
+    font-family: var(--font-mono);
+    font-size: 18px;
+    line-height: 1.4;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    color: var(--color-jade-bright);
+    text-shadow:
+        0 0 3px rgb(5, 9, 8),
+        0 0 10px rgb(5, 9, 8);
+    pointer-events: none;
+}
+.job-dates .to {
+    font-size: 12.5px;
+    letter-spacing: 0.16em;
+    color: var(--color-mono-dim);
+}
+
+/* ---- the leading sentence and points ---------------------------------------------- */
+
+/* the text sits on the trail, so a dark halo keeps it readable */
+.job-text {
+    font-size: 15.5px;
+    line-height: 1.66;
+    color: var(--color-body);
+    text-shadow:
+        0 0 2px rgb(5, 9, 8),
+        0 0 4px rgb(5, 9, 8),
+        0 0 8px rgb(5, 9, 8),
+        0 0 14px rgb(5, 9, 8),
+        0 0 24px rgba(5, 9, 8, 0.9);
+    transition: opacity 0.5s;
+}
+.job-lead {
+    font-size: 16px;
+    color: var(--color-ink);
+}
+.job-points {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.job-points li {
+    position: relative;
+    isolation: isolate;
+    padding-left: 26px;
+    transition: color 0.2s;
+}
+/* bold keeps the text's own color, so it dims along with it */
+.job-points b {
+    font-weight: 600;
+}
+/* the marker: a little upright rhombus, the shape of the stone's left rhombus, in the project's color */
+.job-points li::before {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 0.42em;
+    width: 8px;
+    height: 14px;
+    clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+    background: rgba(143, 179, 164, 0.35);
+    transition:
+        background 0.2s,
+        filter 0.2s,
+        transform 0.2s;
+}
+/* a dark pool behind the marker, so a dot or grid line under it doesn't cut through */
+.job-points li::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: -3px;
+    top: calc(0.42em - 8px);
+    width: 26px;
+    height: 30px;
+    background: radial-gradient(closest-side, rgb(5, 9, 8) 45%, rgba(5, 9, 8, 0.85) 70%, transparent);
+}
+.job-points li.linked::before {
+    background: rgb(var(--c));
+}
+.job-points li.lit::before {
+    transform: scale(1.35);
+    filter: drop-shadow(0 0 5px rgba(var(--c), 0.9));
+}
+.job.lights-points .job-points li:not(.lit) {
+    color: rgba(195, 219, 208, 0.55);
+}
+.job.lights-points .job-points li:not(.lit)::before {
+    opacity: 0.4;
+}
+
+/* ---- while a project's display is open ------------------------------------------------ */
+
+.work h1,
+.work .job {
+    transition: opacity 0.5s;
+}
+.work.reading h1,
+.work.reading .job {
+    opacity: 0.2;
 }
