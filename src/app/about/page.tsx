@@ -19,9 +19,9 @@ export default function About() {
             <SectionHeader as="h1" title="about me" />
             <div className="grid grid-cols-1 items-start gap-8 sm:grid-cols-2">
                 <div className={BODY}>
-                    <p>hi there, i'm jade! thanks for taking a peek.</p>
+                    <p>hi there, i&apos;m jade! thanks for taking a peek.</p>
                     <p>
-                        i'm currently a core maintainer of{" "}
+                        i&apos;m currently a core maintainer of{" "}
                         <Link href={"https://www.jspsych.org/latest/"} className={LINK}>
                             jsPsych
                         </Link>
@@ -39,7 +39,7 @@ export default function About() {
                         className="h-auto w-full border border-jade/40 [image-rendering:pixelated]"
                     />
                     <figcaption className="font-mono text-[12px] leading-[1.7] text-mono-dim">
-                        got this auto-assigned to me on github, don't think I want anything else{" "}
+                        got this auto-assigned to me on github, don&apos;t think I want anything else{" "}
                         <span className="whitespace-nowrap">𑣲₍ ᐢ. .ᐢ₎</span>
                     </figcaption>
                 </figure>
@@ -47,10 +47,10 @@ export default function About() {
             <SectionHeader as="h3" title="background" />
             <div className={BODY}>
                 <p>
-                    i'm just a newbie in the tech industry, but undoubtedly passionate on all matters development, both
-                    for the self and within the terminal. always looking for a chance to grow, to learn something new,
-                    to tinker with novel solutions, and just solve problems that'll make people's lives more
-                    straightforward and stress-free.
+                    i&apos;m just a newbie in the tech industry, but undoubtedly passionate on all matters development,
+                    both for the self and within the terminal. always looking for a chance to grow, to learn something
+                    new, to tinker with novel solutions, and just solve problems that&apos;ll make people&apos;s lives
+                    more straightforward and stress-free.
                 </p>
                 <p>
                     my professional work is centered around being a research software engineer, creating and adding to

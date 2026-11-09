@@ -27,11 +27,11 @@
     --hairline: linear-gradient(90deg, rgba(53, 230, 164, 0.5), transparent);
 }
 
-/* nav pill and buttons: opposite corners cut */
+/* nav pill and buttons: opposite corners cut. reach 1px past, if the pill is on a half pixel it cuts off the border */
 @utility notch-pill {
     clip-path: polygon(
         12px -1px,
-        /* reach 1px past, if the pill is on a half pixel it cuts off the border */ calc(100% + 1px) -1px,
+        calc(100% + 1px) -1px,
         calc(100% + 1px) calc(100% - 12px),
         calc(100% - 12px) calc(100% + 1px),
         -1px calc(100% + 1px),
